@@ -54,12 +54,7 @@ export default function Footer() {
             >
               Login
             </Link>
-            <Link
-              href="/auth/signup"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Sign Up
-            </Link>
+            {/* Sign Up removed */}
           </div>
         </div>
       </div>

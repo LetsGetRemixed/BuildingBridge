@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Nunito_Sans } from 'next/font/google'
 import './globals.css'
 import Footer from '@/components/Footer'
+import Navbar from '@/components/Navbar'
 
-const inter = Inter({ subsets: ['latin'] })
+const main = Inter({ subsets: ['latin'], variable: '--font-main' })
+const heading = Nunito_Sans({ subsets: ['latin'], weight: ['400','600','700'], variable: '--font-heading' })
 
 export const metadata: Metadata = {
   title: 'Vercel Template',
@@ -27,7 +29,8 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon.ico" />
       </head>
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
+      <body className={`${main.variable} ${heading.variable} font-main flex flex-col min-h-screen`}>
+        <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
       </body>
