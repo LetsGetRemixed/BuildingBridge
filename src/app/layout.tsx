@@ -8,8 +8,8 @@ const main = Inter({ subsets: ['latin'], variable: '--font-main' })
 const heading = Nunito_Sans({ subsets: ['latin'], weight: ['400','600','700'], variable: '--font-heading' })
 
 export const metadata: Metadata = {
-  title: 'Vercel Template',
-  description: 'A simple Next.js app with MongoDB backend',
+  title: 'Building Bridge Foundation',
+  description: 'Building Bridges, Strengthening Communities.',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
