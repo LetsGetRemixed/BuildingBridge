@@ -35,13 +35,24 @@ export default function Home() {
       <section
         className="relative h-[60vh] min-h-[420px] flex items-center justify-center"
         style={{
-          backgroundImage: "url('/images/BBF 4.JPG')",
+          backgroundImage: "url('/images/headerbackground.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.55) 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.55) 100%)' }} />
         <div className="relative z-10 text-center px-6">
+          <div className="mb-6 flex justify-center">
+            <Image
+              src="/logo2.png"
+              alt="Building Bridge Foundation"
+              width={800}
+              height={800}
+              priority
+              className="max-w-sm"
+              style={{ filter: 'drop-shadow(0 0 5px rgba(255, 255, 255, .8)) drop-shadow(0 0 5px rgba(255, 255, 255, .5))' }}
+            />
+          </div>
           <h1 className="font-heading text-white text-4xl md:text-5xl font-bold tracking-tight">
             Building Bridges, Strengthening Communities.
           </h1>
@@ -95,24 +106,105 @@ export default function Home() {
       </section>
 
       {/* Pillars Overview */}
-      <section className="py-12 md:py-16" style={{ backgroundColor: '#FAF9F7' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold mb-6" style={{ color: foundationBrown }}>Our Pillars</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: '#FAF9F7' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4" style={{ color: foundationBrown }}>Our Pillars</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              The foundation of our mission rests on five core pillars that guide everything we do
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
             {[
-              { title: 'Education', href: '/about/pillars#education', icon: '/icons/education.png' },
-              { title: 'Families', href: '/about/pillars#families', icon: '/icons/family.png' },
-              { title: 'Life Skills', href: '/about/pillars#lifeskills', icon: '/icons/life.png' },
-              { title: 'Food/Housing', href: '/about/pillars#support', icon: '/icons/housing.png' },
-              { title: 'Community', href: '/about/pillars#community', icon: '/icons/community.png' },
-            ].map((p) => (
+              { 
+                title: 'Education', 
+                href: '/about/pillars#education', 
+                icon: '/icons/education.png',
+                description: 'Empowering minds through learning opportunities'
+              },
+              { 
+                title: 'Families', 
+                href: '/about/pillars#families', 
+                icon: '/icons/family.png',
+                description: 'Strengthening family bonds and support systems'
+              },
+              { 
+                title: 'Life Skills', 
+                href: '/about/pillars#lifeskills', 
+                icon: '/icons/life.png',
+                description: 'Building practical skills for everyday success'
+              },
+              { 
+                title: 'Food/Housing', 
+                href: '/about/pillars#support', 
+                icon: '/icons/housing.png',
+                description: 'Ensuring basic needs are met with dignity'
+              },
+              { 
+                title: 'Community', 
+                href: '/about/pillars#community', 
+                icon: '/icons/community.png',
+                description: 'Fostering connections and collective growth'
+              },
+            ].map((p, index) => (
               <Link key={p.title} href={p.href} className="block group">
-                <div className="rounded-lg p-4 h-full border transition-shadow shadow-sm hover:shadow-md bg-white" style={{ borderColor: '#e5e7eb' }}>
-                  <div className="mb-3">
-                    <Image src={p.icon} alt={`${p.title} icon`} width={40} height={40} className="object-contain" />
+                <div className="relative h-full rounded-2xl p-6 md:p-8 bg-white border-2 transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-2" 
+                     style={{ 
+                       borderColor: '#e5e7eb',
+                       background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)'
+                     }}>
+                  {/* Decorative accent */}
+                  <div 
+                    className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ 
+                      background: index === 0 ? `linear-gradient(90deg, ${foundationGreen}, ${foundationBrown})` :
+                                  index === 1 ? `linear-gradient(90deg, ${foundationBrown}, ${foundationOrange})` :
+                                  index === 2 ? `linear-gradient(90deg, ${foundationOrange}, ${foundationGreen})` :
+                                  index === 3 ? `linear-gradient(90deg, ${foundationGreen}, ${foundationOrange})` :
+                                  `linear-gradient(90deg, ${foundationBrown}, ${foundationGreen})`
+                    }}
+                  />
+                  
+                  {/* Icon container with enhanced styling */}
+                  <div className="relative mb-6 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-300" 
+                         style={{ 
+                           background: index === 0 ? foundationGreen :
+                                      index === 1 ? foundationBrown :
+                                      index === 2 ? foundationOrange :
+                                      index === 3 ? foundationGreen :
+                                      foundationBrown
+                         }}
+                    />
+                    <div className="relative p-4 rounded-2xl bg-gradient-to-br from-gray-50 to-white group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      <Image 
+                        src={p.icon} 
+                        alt={`${p.title} icon`} 
+                        width={64} 
+                        height={64} 
+                        className="object-contain"
+                      />
+                    </div>
                   </div>
-                  <h3 className="font-semibold text-gray-900 group-hover:underline">{p.title}</h3>
-                  <p className="text-sm text-gray-600 mt-1">Learn more</p>
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <h3 className="font-heading text-xl md:text-2xl font-bold mb-3 text-gray-900 group-hover:text-gray-800 transition-colors">
+                      {p.title}
+                    </h3>
+                    <p className="text-sm md:text-base text-gray-600 mb-4 leading-relaxed">
+                      {p.description}
+                    </p>
+                    <div className="flex items-center text-sm font-semibold" 
+                         style={{ color: foundationGreen }}>
+                      <span className="group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
+                        Learn more
+                        <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </Link>
             ))}

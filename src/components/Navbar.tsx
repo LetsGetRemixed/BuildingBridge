@@ -26,12 +26,13 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3">
               <Image
-                src="/images/Building Bridge logo.jpg"
+                src="/logoicon.png"
                 alt="Building Bridge logo"
                 width={40}
                 height={40}
                 priority
               />
+              <span className="hidden lg:block font-heading text-lg font-semibold text-gray-900">BUILDING BRIDGE FOUNDATION</span>
               <span className="sr-only">Home</span>
             </Link>
           </div>

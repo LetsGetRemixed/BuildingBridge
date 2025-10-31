@@ -1,19 +1,27 @@
 import type { Metadata } from 'next'
-import { Inter, Nunito_Sans } from 'next/font/google'
+import { Inter, Cinzel } from 'next/font/google'
 import './globals.css'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 
 const main = Inter({ subsets: ['latin'], variable: '--font-main' })
-const heading = Nunito_Sans({ subsets: ['latin'], weight: ['400','600','700'], variable: '--font-heading' })
+const heading = Cinzel({ subsets: ['latin'], weight: ['700'], variable: '--font-heading' })
 
 export const metadata: Metadata = {
   title: 'Building Bridge Foundation',
   description: 'Building Bridges, Strengthening Communities.',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon0.svg', type: 'image/svg+xml' },
+      { url: '/icon1.png', type: 'image/png' },
+    ],
     shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
+  manifest: '/manifest.json',
+  other: {
+    'apple-mobile-web-app-title': 'Building Bridge',
   },
 }
 
@@ -24,11 +32,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/favicon.ico" />
-      </head>
       <body className={`${main.variable} ${heading.variable} font-main flex flex-col min-h-screen`}>
         <Navbar />
         <main className="flex-grow">{children}</main>
