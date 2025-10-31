@@ -31,6 +31,7 @@ export default function Navbar() {
                 width={40}
                 height={40}
                 priority
+                className="w-8 h-8 md:w-10 md:h-10"
               />
               <span className="hidden lg:block font-heading text-lg font-semibold text-gray-900">BUILDING BRIDGE FOUNDATION</span>
               <span className="sr-only">Home</span>

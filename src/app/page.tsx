@@ -49,14 +49,14 @@ export default function Home() {
               width={800}
               height={800}
               priority
-              className="max-w-sm"
+              className="max-w-[200px] md:max-w-sm"
               style={{ filter: 'drop-shadow(0 0 5px rgba(255, 255, 255, .8)) drop-shadow(0 0 5px rgba(255, 255, 255, .5))' }}
             />
           </div>
-          <h1 className="font-heading text-white text-4xl md:text-5xl font-bold tracking-tight">
+          <h1 className="font-heading text-white text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
             Building Bridges, Strengthening Communities.
           </h1>
-          <p className="mt-3 text-white/90 max-w-2xl mx-auto">
+          <p className="mt-3 text-white/90 max-w-2xl mx-auto text-sm md:text-base">
             Empowering families through education, life skills, and community partnerships.
           </p>
           <Link
@@ -70,34 +70,243 @@ export default function Home() {
       </section>
 
       {/* Mission + Vision */}
-      <section className="py-12 md:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="rounded-lg p-6 border" style={{ borderColor: '#e5e7eb' }}>
-              <div className="flex items-start">
-                <div className="mr-4 mt-1">
-                  <svg className="h-7 w-7" viewBox="0 0 24 24" fill={foundationGreen}><path d="M12 2l3 7h7l-5.5 4 2.5 7-7-4.5L5.5 20 8 13 2 9h7z"/></svg>
+      <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-1/2 left-0 w-96 h-96 rounded-full" style={{ background: `radial-gradient(circle, ${foundationGreen} 0%, transparent 70%)`, transform: 'translate(-50%, -50%)' }} />
+          <div className="absolute top-1/2 right-0 w-96 h-96 rounded-full" style={{ background: `radial-gradient(circle, ${foundationOrange} 0%, transparent 70%)`, transform: 'translate(50%, -50%)' }} />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Enhanced Header */}
+          <div className="text-center mb-12 md:mb-16">
+            <div className="inline-block mb-4">
+              <div className="h-1 w-24 mx-auto mb-4 rounded-full" style={{ background: `linear-gradient(90deg, ${foundationGreen}, ${foundationOrange})` }} />
+              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4" style={{ color: foundationBrown }}>
+                Our Foundation
+              </h2>
+              <div className="h-1 w-24 mx-auto mt-4 rounded-full" style={{ background: `linear-gradient(90deg, ${foundationOrange}, ${foundationGreen})` }} />
+            </div>
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
+              The principles that guide our work and shape our impact in the community
+            </p>
+          </div>
+
+          {/* Mission & Vision Cards */}
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            {/* Mission Card */}
+            <div className="group relative">
+              {/* Floating shadow effect */}
+              <div 
+                className="absolute -z-10 inset-0 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-2xl"
+                style={{ 
+                  background: foundationGreen,
+                  transform: 'translateY(12px) scale(0.95)'
+                }}
+              />
+
+              <div 
+                className="relative h-full rounded-3xl p-8 md:p-10 border-2 transition-all duration-500 shadow-xl hover:shadow-2xl hover:-translate-y-2 overflow-hidden"
+                style={{ 
+                  borderColor: '#e5e7eb',
+                  background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)'
+                }}
+              >
+                {/* Gradient overlay on hover */}
+                <div 
+                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500"
+                  style={{
+                    background: `linear-gradient(135deg, ${foundationGreen}, ${foundationBrown})`
+                  }}
+                />
+
+                {/* Top accent bar */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-2 rounded-t-3xl transition-all duration-500"
+                  style={{ 
+                    background: `linear-gradient(90deg, ${foundationGreen}, ${foundationBrown})`
+                  }}
+                />
+
+                {/* Icon Container */}
+                <div className="relative mb-6">
+                  <div className="relative inline-flex items-center justify-center">
+                    {/* Glowing background circle */}
+                    <div 
+                      className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-500 blur-xl"
+                      style={{ 
+                        background: foundationGreen,
+                        transform: 'scale(1.5)'
+                      }}
+                    />
+                    {/* Icon container */}
+                    <div 
+                      className="relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${foundationGreen}15, ${foundationGreen}05)`
+                      }}
+                    >
+                      <svg 
+                        className="w-12 h-12 transition-colors duration-500" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        style={{ color: foundationGreen }}
+                      >
+                        <path 
+                          d="M12 2L15 9H22L17 13L19 20L12 16L5 20L7 13L2 9H9L12 2Z" 
+                          stroke="currentColor" 
+                          strokeWidth="2" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold" style={{ color: foundationBrown }}>Our Mission</h3>
-                  <p className="mt-2 text-gray-700">
+
+                {/* Content */}
+                <div className="relative z-10">
+                  <h3 
+                    className="text-3xl md:text-4xl font-heading font-bold mb-4 transition-colors duration-300"
+                    style={{ color: foundationBrown }}
+                  >
+                    Our Mission
+                  </h3>
+                  <div className="h-1 w-16 mb-6 rounded-full transition-all duration-500 group-hover:w-24" style={{ background: foundationGreen }} />
+                  <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
                     To bridge gaps in education, family support, and life skills by partnering
                     with communities and organizations to build lasting opportunities.
                   </p>
+                  
+                  {/* Decorative bottom accent */}
+                  <div className="flex items-center gap-2 mt-6 pt-6 border-t border-gray-100">
+                    <div className="flex gap-1">
+                      {[1, 2, 3].map((i) => (
+                        <div 
+                          key={i}
+                          className="w-2 h-2 rounded-full transition-all duration-300 group-hover:scale-125"
+                          style={{ 
+                            background: foundationGreen,
+                            opacity: 0.3 + (i * 0.2)
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm font-medium text-gray-500 ml-2">Building bridges together</span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="rounded-lg p-6 border" style={{ borderColor: '#e5e7eb' }}>
-              <div className="flex items-start">
-                <div className="mr-4 mt-1">
-                  <svg className="h-7 w-7" viewBox="0 0 24 24" fill={foundationOrange}><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5v6l5 3"/></svg>
+
+            {/* Vision Card */}
+            <div className="group relative">
+              {/* Floating shadow effect */}
+              <div 
+                className="absolute -z-10 inset-0 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-2xl"
+                style={{ 
+                  background: foundationOrange,
+                  transform: 'translateY(12px) scale(0.95)'
+                }}
+              />
+
+              <div 
+                className="relative h-full rounded-3xl p-8 md:p-10 border-2 transition-all duration-500 shadow-xl hover:shadow-2xl hover:-translate-y-2 overflow-hidden"
+                style={{ 
+                  borderColor: '#e5e7eb',
+                  background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)'
+                }}
+              >
+                {/* Gradient overlay on hover */}
+                <div 
+                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500"
+                  style={{
+                    background: `linear-gradient(135deg, ${foundationOrange}, ${foundationBrown})`
+                  }}
+                />
+
+                {/* Top accent bar */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-2 rounded-t-3xl transition-all duration-500"
+                  style={{ 
+                    background: `linear-gradient(90deg, ${foundationOrange}, ${foundationBrown})`
+                  }}
+                />
+
+                {/* Icon Container */}
+                <div className="relative mb-6">
+                  <div className="relative inline-flex items-center justify-center">
+                    {/* Glowing background circle */}
+                    <div 
+                      className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-500 blur-xl"
+                      style={{ 
+                        background: foundationOrange,
+                        transform: 'scale(1.5)'
+                      }}
+                    />
+                    {/* Icon container */}
+                    <div 
+                      className="relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${foundationOrange}15, ${foundationOrange}05)`
+                      }}
+                    >
+                      <svg 
+                        className="w-12 h-12 transition-colors duration-500" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        style={{ color: foundationOrange }}
+                      >
+                        <circle 
+                          cx="12" 
+                          cy="12" 
+                          r="10" 
+                          stroke="currentColor" 
+                          strokeWidth="2" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round"
+                        />
+                        <path 
+                          d="M12 6V12L16 14" 
+                          stroke="currentColor" 
+                          strokeWidth="2" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold" style={{ color: foundationBrown }}>Our Vision</h3>
-                  <p className="mt-2 text-gray-700">
+
+                {/* Content */}
+                <div className="relative z-10">
+                  <h3 
+                    className="text-3xl md:text-4xl font-heading font-bold mb-4 transition-colors duration-300"
+                    style={{ color: foundationBrown }}
+                  >
+                    Our Vision
+                  </h3>
+                  <div className="h-1 w-16 mb-6 rounded-full transition-all duration-500 group-hover:w-24" style={{ background: foundationOrange }} />
+                  <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
                     Strong, thriving neighborhoods where every family has access to the tools
                     and support they need to succeed.
                   </p>
+                  
+                  {/* Decorative bottom accent */}
+                  <div className="flex items-center gap-2 mt-6 pt-6 border-t border-gray-100">
+                    <div className="flex gap-1">
+                      {[1, 2, 3].map((i) => (
+                        <div 
+                          key={i}
+                          className="w-2 h-2 rounded-full transition-all duration-300 group-hover:scale-125"
+                          style={{ 
+                            background: foundationOrange,
+                            opacity: 0.3 + (i * 0.2)
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm font-medium text-gray-500 ml-2">Envisioning tomorrow</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -264,37 +473,137 @@ export default function Home() {
       </section>
 
       {/* Partner Highlights */}
-      <section className="py-12 md:py-16" style={{ backgroundColor: '#FAF9F7' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-6">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold" style={{ color: foundationBrown }}>Our Partners</h2>
-            <span className="text-sm text-gray-500">Thank you for your support</span>
+      <section className="py-16 md:py-24 relative overflow-hidden" style={{ backgroundColor: '#FAF9F7' }}>
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-96 h-96 rounded-full" style={{ background: `radial-gradient(circle, ${foundationGreen} 0%, transparent 70%)`, transform: 'translate(-30%, -30%)' }} />
+          <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full" style={{ background: `radial-gradient(circle, ${foundationOrange} 0%, transparent 70%)`, transform: 'translate(30%, 30%)' }} />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Enhanced Header */}
+          <div className="text-center mb-12 md:mb-16">
+            <div className="inline-block mb-4">
+              <div className="h-1 w-20 mx-auto mb-3 rounded-full" style={{ background: `linear-gradient(90deg, ${foundationGreen}, ${foundationOrange})` }} />
+              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-3" style={{ color: foundationBrown }}>
+                Our Partners
+              </h2>
+              <div className="h-1 w-20 mx-auto mt-3 rounded-full" style={{ background: `linear-gradient(90deg, ${foundationOrange}, ${foundationGreen})` }} />
+            </div>
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-4">
+              Building stronger communities together through meaningful partnerships
+            </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+
+          {/* Partners Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
             {[
-              '/partnerships/christianministries.png',
-              '/partnerships/Connections.png',
-              '/partnerships/ednabusinessassociation.png',
-              '/partnerships/food-bank-logo.png',
-              '/partnerships/palacios.png',
-            ].map((src, idx) => (
+              { src: '/partnerships/christianministries.png', name: 'Christian Ministries' },
+              { src: '/partnerships/Connections.png', name: 'Connections' },
+              { src: '/partnerships/ednabusinessassociation.png', name: 'Edna Business Association' },
+              { src: '/partnerships/food-bank-logo.png', name: 'Food Bank' },
+              { src: '/partnerships/palacios.png', name: 'Palacios' },
+            ].map((partner, idx) => (
               <div
                 key={idx}
-                className="group bg-white rounded-lg border shadow-sm hover:shadow-md transition overflow-hidden"
-                style={{ borderColor: '#e5e7eb' }}
+                className="group relative"
               >
-                <div className="relative h-20 sm:h-24 md:h-28 px-4 py-3 flex items-center justify-center">
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={src}
-                      alt={`Partner ${idx + 1}`}
-                      fill
-                      className="object-contain transition-transform duration-200 ease-out group-hover:scale-110"
-                    />
+                {/* Card with enhanced styling */}
+                <div 
+                  className="relative h-full bg-white rounded-2xl p-6 md:p-8 border-2 transition-all duration-500 shadow-lg hover:shadow-2xl hover:-translate-y-3 overflow-hidden"
+                  style={{ 
+                    borderColor: '#e5e7eb',
+                    background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)'
+                  }}
+                >
+                  {/* Subtle gradient overlay on hover */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity duration-500"
+                    style={{
+                      background: `linear-gradient(135deg, ${foundationGreen}, ${foundationOrange})`
+                    }}
+                  />
+                  
+                  {/* Top accent bar */}
+                  <div 
+                    className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ 
+                      background: idx % 2 === 0 
+                        ? `linear-gradient(90deg, ${foundationGreen}, ${foundationBrown})`
+                        : `linear-gradient(90deg, ${foundationOrange}, ${foundationBrown})`
+                    }}
+                  />
+                  
+                  {/* Subtle background glow on hover */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl"
+                    style={{ 
+                      background: idx % 2 === 0 ? foundationGreen : foundationOrange
+                    }}
+                  />
+
+                  {/* Logo Container */}
+                  <div className="relative z-10">
+                    <div className="relative h-32 sm:h-36 md:h-40 mb-4 flex items-center justify-center">
+                      {/* Decorative circle behind logo */}
+                      <div 
+                        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-5 transition-opacity duration-500"
+                        style={{ 
+                          background: `radial-gradient(circle, ${idx % 2 === 0 ? foundationGreen : foundationOrange} 0%, transparent 70%)`
+                        }}
+                      />
+                      
+                      {/* Logo with smooth transitions */}
+                      <div className="relative w-full h-full px-4">
+                        <Image
+                          src={partner.src}
+                          alt={`${partner.name} logo`}
+                          fill
+                          sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, 250px"
+                          className="object-contain transition-all duration-500 ease-out group-hover:scale-110 group-hover:brightness-110"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Partner name with elegant typography */}
+                    <div className="text-center">
+                      <h3 className="text-sm md:text-base font-semibold text-gray-700 group-hover:text-gray-900 transition-colors duration-300 line-clamp-2">
+                        {partner.name}
+                      </h3>
+                    </div>
                   </div>
+
+                  {/* Bottom accent line */}
+                  <div 
+                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 group-hover:w-3/4 h-0.5 rounded-full transition-all duration-500"
+                    style={{ 
+                      background: idx % 2 === 0 ? foundationGreen : foundationOrange
+                    }}
+                  />
                 </div>
+
+                {/* Floating shadow effect */}
+                <div 
+                  className="absolute -z-10 inset-0 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-2xl"
+                  style={{ 
+                    background: idx % 2 === 0 ? foundationGreen : foundationOrange,
+                    transform: 'translateY(8px) scale(0.95)'
+                  }}
+                />
               </div>
             ))}
+          </div>
+
+          {/* Thank you message */}
+          <div className="text-center mt-12 md:mt-16">
+            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm">
+              <svg className="w-5 h-5" style={{ color: foundationGreen }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              <span className="text-sm md:text-base font-medium text-gray-700">
+                Thank you for your unwavering support
+              </span>
+            </div>
           </div>
         </div>
       </section>
