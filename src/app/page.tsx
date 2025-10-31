@@ -398,8 +398,18 @@ export default function Home() {
                   
                   {/* Content */}
                   <div className="relative z-10">
-                    <h3 className="font-heading text-xl md:text-2xl font-bold mb-3 text-gray-900 group-hover:text-gray-800 transition-colors">
-                      {p.title}
+                    <h3 className={`font-heading font-bold mb-3 text-gray-900 group-hover:text-gray-800 transition-colors break-words ${
+                      p.title === 'Food/Housing' 
+                        ? 'text-base sm:text-lg md:text-xl lg:text-xl leading-tight' 
+                        : 'text-xl md:text-xl'
+                    }`}>
+                      {p.title === 'Food/Housing' ? (
+                        <>
+                          Food/<wbr />Housing
+                        </>
+                      ) : (
+                        p.title
+                      )}
                     </h3>
                     <p className="text-sm md:text-base text-gray-600 mb-4 leading-relaxed">
                       {p.description}
@@ -443,18 +453,32 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <div className="relative overflow-hidden rounded-lg border" style={{ borderColor: '#e5e7eb' }}>
-            <div className="relative h-72 md:h-96">
-              {/* Current slide */}
-              <Image
-                src={slides[current].src}
-                alt={slides[current].caption}
-                fill
-                sizes="(max-width: 768px) 100vw, 1200px"
-                className="object-cover"
-                priority
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 80%)' }}>
+          <div className="relative overflow-hidden rounded-lg border bg-gray-10" style={{ borderColor: '#e5e7eb' }}>
+            <div className="relative w-full h-72 md:h-96 lg:h-[500px]">
+              {/* Blurred background version */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={slides[current].src}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, 1200px"
+                  className="object-cover blur-md opacity-90 scale-100"
+                  aria-hidden="true"
+                  priority
+                />
+              </div>
+              {/* Current slide - sharp foreground */}
+              <div className="absolute inset-0 z-10 flex items-center justify-center">
+                <Image
+                  src={slides[current].src}
+                  alt={slides[current].caption}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 1200px"
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-4 z-20" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 10%)' }}>
                 <p className="text-white text-sm md:text-base">{slides[current].caption}</p>
               </div>
             </div>
@@ -609,27 +633,62 @@ export default function Home() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-14" style={{ backgroundColor: foundationGreen }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-heading text-white text-2xl md:text-3xl font-bold">Ready to make a difference?</h2>
-          <p className="text-white/90 mt-2 max-w-2xl mx-auto">
-            Join us as a volunteer, partner with BBF, or reach out to learn more.
-          </p>
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <Link
-              href="/get-involved"
-              className="px-6 py-3 rounded-md font-semibold text-white"
-              style={{ backgroundColor: foundationOrange }}
-            >
-              Get Involved
-            </Link>
-            <Link
-              href="/contact"
-              className="px-6 py-3 rounded-md font-semibold text-white border"
-              style={{ borderColor: 'white' }}
-            >
-              Contact Us
-            </Link>
+      <section className="relative py-8 md:py-10 overflow-hidden" style={{ backgroundColor: foundationGreen }}>
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-64 h-64 rounded-full" style={{ background: `radial-gradient(circle, ${foundationOrange} 0%, transparent 70%)`, transform: 'translate(-30%, -30%)' }} />
+          <div className="absolute bottom-0 right-0 w-64 h-64 rounded-full" style={{ background: `radial-gradient(circle, ${foundationBrown} 0%, transparent 70%)`, transform: 'translate(30%, 30%)' }} />
+        </div>
+
+        {/* Decorative pattern overlay */}
+        <div className="absolute inset-0 opacity-5" style={{ 
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)',
+          backgroundSize: '40px 40px'
+        }} />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
+            {/* Left side - Text content */}
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="font-heading text-white text-2xl md:text-3xl lg:text-4xl font-bold mb-2 tracking-tight">
+                Ready to make a difference?
+              </h2>
+              <p className="text-white/90 text-sm md:text-base max-w-xl mx-auto md:mx-0">
+                Join us as a volunteer, partner with BBF, or reach out to learn more.
+              </p>
+            </div>
+
+            {/* Right side - Action buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4 flex-shrink-0">
+              <Link
+                href="/get-involved"
+                className="group relative px-6 md:px-8 py-3 rounded-lg font-semibold text-white overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+                style={{ backgroundColor: foundationOrange }}
+              >
+                {/* Hover glow effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-lg" style={{
+                  background: 'radial-gradient(circle, rgba(255,255,255,0.4), transparent)'
+                }} />
+                <span className="relative z-10 flex items-center gap-2">
+                  Get Involved
+                  <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </span>
+              </Link>
+
+              <Link
+                href="/contact"
+                className="group relative px-6 md:px-8 py-3 rounded-lg font-semibold text-white border-2 border-white/80 hover:border-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl backdrop-blur-sm bg-white/10"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Contact Us
+                  <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
