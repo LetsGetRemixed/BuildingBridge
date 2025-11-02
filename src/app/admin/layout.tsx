@@ -65,6 +65,7 @@ export default function AdminLayout({
   const navigation = [
     { name: 'Dashboard', href: '/admin', current: pathname === '/admin' },
     { name: 'User Management', href: '/admin/users', current: pathname === '/admin/users' },
+    { name: 'Events', href: '/admin/events', current: pathname === '/admin/events' },
   ]
 
   return (
