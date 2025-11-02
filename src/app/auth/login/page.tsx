@@ -31,8 +31,8 @@ export default function Login() {
         // Store token in localStorage
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
-        // Redirect to home
-        router.push('/')
+        // Redirect to admin dashboard
+        router.push('/admin')
       } else {
         setError(data.error || 'An error occurred')
       }

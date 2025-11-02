@@ -95,7 +95,15 @@ export default function Navbar() {
                 <div className="absolute left-0 mt-2 w-56 rounded-xl shadow-xl bg-white ring-1 ring-gray-200/50 z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="py-2">
                     <Link 
-                      href="/about/pillars" 
+                      href="/about" 
+                      className="block px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 relative group"
+                      onClick={() => setAboutOpen(false)}
+                    >
+                      <span className="relative z-10">About Us</span>
+                      <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={{ background: foundationGreen }} />
+                    </Link>
+                    <Link 
+                      href="/about#pillars" 
                       className="block px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 relative group"
                       onClick={() => setAboutOpen(false)}
                     >
@@ -103,7 +111,7 @@ export default function Navbar() {
                       <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={{ background: foundationGreen }} />
                     </Link>
                     <Link 
-                      href="/about/partnerships" 
+                      href="/about#partnerships" 
                       className="block px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 relative group"
                       onClick={() => setAboutOpen(false)}
                     >
@@ -111,11 +119,11 @@ export default function Navbar() {
                       <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={{ background: foundationOrange }} />
                     </Link>
                     <Link 
-                      href="/about/events" 
+                      href="/about#events" 
                       className="block px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 relative group"
                       onClick={() => setAboutOpen(false)}
                     >
-                      <span className="relative z-10">Events</span>
+                      <span className="relative z-10">Recent Events</span>
                       <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={{ background: foundationBrown }} />
                     </Link>
                   </div>
@@ -123,20 +131,6 @@ export default function Navbar() {
               )}
             </div>
 
-            <Link 
-              href="/programs" 
-              className="font-heading text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 px-3 lg:px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-50 relative group"
-            >
-              <span className="relative z-10">Programs</span>
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 group-hover:h-1 opacity-0 group-hover:opacity-100" style={{ background: foundationOrange }} />
-            </Link>
-            <Link 
-              href="/get-involved" 
-              className="font-heading text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 px-3 lg:px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-50 relative group"
-            >
-              <span className="relative z-10">Get Involved</span>
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 group-hover:h-1 opacity-0 group-hover:opacity-100" style={{ background: foundationGreen }} />
-            </Link>
             <Link 
               href="/contact" 
               className="font-heading text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 px-3 lg:px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-50 relative group"
@@ -203,44 +197,37 @@ export default function Navbar() {
               {aboutMobileOpen && (
                 <div className="mt-1 ml-4 space-y-1 border-l-2 border-gray-200 pl-4 animate-in slide-in-from-left duration-200">
                   <Link 
-                    href="/about/pillars" 
+                    href="/about" 
+                    className="font-heading block px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    onClick={closeMobileMenu}
+                  >
+                    About Us
+                  </Link>
+                  <Link 
+                    href="/about#pillars" 
                     className="font-heading block px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
                     onClick={closeMobileMenu}
                   >
                     Our Pillars
                   </Link>
                   <Link 
-                    href="/about/partnerships" 
+                    href="/about#partnerships" 
                     className="font-heading block px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
                     onClick={closeMobileMenu}
                   >
                     Partnerships
                   </Link>
                   <Link 
-                    href="/about/events" 
+                    href="/about#events" 
                     className="font-heading block px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
                     onClick={closeMobileMenu}
                   >
-                    Events
+                    Recent Events
                   </Link>
                 </div>
               )}
             </div>
             
-            <Link 
-              href="/programs" 
-              className="font-heading block px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-              onClick={closeMobileMenu}
-            >
-              Programs
-            </Link>
-            <Link 
-              href="/get-involved" 
-              className="font-heading block px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-              onClick={closeMobileMenu}
-            >
-              Get Involved
-            </Link>
             <Link 
               href="/contact" 
               className="font-heading block px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
