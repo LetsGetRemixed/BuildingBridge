@@ -2,17 +2,27 @@ import { NextResponse } from 'next/server'
 import { testConnection } from '@/lib/mongodb'
 
 export async function GET() {
-  try {
-    const isConnected = await testConnection()
-    return NextResponse.json({ 
-      connected: isConnected,
-      timestamp: new Date().toISOString()
-    })
-  } catch (error) {
-    return NextResponse.json({ 
-      connected: false,
-      error: 'Failed to check connection',
-      timestamp: new Date().toISOString()
-    }, { status: 500 })
+  const checks = {
+    mongodb: false,
+    jwtSecret: !!process.env.JWT_SECRET,
+    mongodbUri: !!process.env.MONGODB_URI,
+    nodeEnv: process.env.NODE_ENV,
+    timestamp: new Date().toISOString()
   }
+
+  try {
+    checks.mongodb = await testConnection()
+  } catch (error) {
+    console.error('Health check error:', error)
+  }
+  
+  const isHealthy = checks.mongodb && checks.jwtSecret && checks.mongodbUri
+  
+  return NextResponse.json({
+    status: isHealthy ? 'healthy' : 'unhealthy',
+    checks,
+    timestamp: new Date().toISOString()
+  }, {
+    status: isHealthy ? 200 : 503
+  })
 }

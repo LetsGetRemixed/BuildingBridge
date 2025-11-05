@@ -65,7 +65,8 @@ export async function findUserByEmail(email: string): Promise<User | null> {
     }
   } catch (error) {
     console.error('Error finding user:', error)
-    return null
+    // Re-throw the error so callers can distinguish between "user not found" and "database error"
+    throw error
   }
 }
 
