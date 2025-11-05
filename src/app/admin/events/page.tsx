@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 
 interface Event {
   _id?: string
@@ -52,11 +53,7 @@ export default function EventsManagement() {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState('')
 
-  useEffect(() => {
-    fetchEvents()
-  }, [pagination.page, search, startDate, endDate])
-
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     try {
       setLoading(true)
       const token = localStorage.getItem('token')
@@ -92,14 +89,18 @@ export default function EventsManagement() {
 
       const data = await response.json()
       setEvents(data.events || [])
-      setPagination(data.pagination || pagination)
+      setPagination(prev => data.pagination || prev)
     } catch (error) {
       console.error('Error fetching events:', error)
       setError('Failed to load events')
     } finally {
       setLoading(false)
     }
-  }
+  }, [pagination.page, pagination.limit, search, startDate, endDate])
+
+  useEffect(() => {
+    fetchEvents()
+  }, [fetchEvents])
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -320,7 +321,7 @@ export default function EventsManagement() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search title or description..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div>
@@ -329,7 +330,7 @@ export default function EventsManagement() {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div>
@@ -338,7 +339,7 @@ export default function EventsManagement() {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="flex items-end gap-2">
@@ -390,10 +391,13 @@ export default function EventsManagement() {
                 <tr key={event._id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {event.imageUrl && (
-                      <img
+                      <Image
                         src={event.imageUrl}
                         alt={event.title}
+                        width={64}
+                        height={64}
                         className="h-16 w-16 object-cover rounded"
+                        unoptimized
                       />
                     )}
                   </td>
@@ -516,7 +520,7 @@ export default function EventsManagement() {
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         required
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                       />
                     </div>
 
@@ -527,7 +531,7 @@ export default function EventsManagement() {
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         required
                         rows={4}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                       />
                     </div>
 
@@ -539,7 +543,7 @@ export default function EventsManagement() {
                           value={formData.date}
                           onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                           required
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                       </div>
 
@@ -550,7 +554,7 @@ export default function EventsManagement() {
                           value={formData.category}
                           onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                           placeholder="e.g., Workshop, Drive, etc."
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                       </div>
                     </div>
@@ -562,7 +566,7 @@ export default function EventsManagement() {
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         placeholder="Event location"
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 bg-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                       />
                     </div>
 
@@ -579,10 +583,13 @@ export default function EventsManagement() {
                       />
                       {imagePreview && (
                         <div className="mt-2">
-                          <img
+                          <Image
                             src={imagePreview}
                             alt="Preview"
+                            width={128}
+                            height={128}
                             className="h-32 w-32 object-cover rounded"
+                            unoptimized
                           />
                         </div>
                       )}

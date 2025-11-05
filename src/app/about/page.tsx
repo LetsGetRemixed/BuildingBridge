@@ -550,7 +550,7 @@ export default function About() {
               </h2>
             </div>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
-              See the impact we're making in our community through recent events and programs
+              See the impact we&apos;re making in our community through recent events and programs
             </p>
           </div>
 
