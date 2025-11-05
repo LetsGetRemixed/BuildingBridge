@@ -8,44 +8,91 @@ runConfig:
       value: production
     - variable: NEXT_PUBLIC_FIREBASE_API_KEY
       secret: NEXT_PUBLIC_FIREBASE_API_KEY
+      availability:
+        - RUNTIME
+        - BUILD
     - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
       secret: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+      availability:
+        - RUNTIME
+        - BUILD
     - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
       secret: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+      availability:
+        - RUNTIME
+        - BUILD
     - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
       secret: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+      availability:
+        - RUNTIME
+        - BUILD
     - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
       secret: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+      availability:
+        - RUNTIME
+        - BUILD
     - variable: NEXT_PUBLIC_FIREBASE_APP_ID
       secret: NEXT_PUBLIC_FIREBASE_APP_ID
+      availability:
+        - RUNTIME
+        - BUILD
     - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
       secret: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+      availability:
+        - RUNTIME
+        - BUILD
     - variable: MONGODB_URI
       secret: MONGODB_URI
+      availability:
+        - RUNTIME
     - variable: JWT_SECRET
       secret: JWT_SECRET
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_TYPE
       secret: FIREBASE_SERVICE_ACCOUNT_TYPE
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_PROJECT_ID
       secret: FIREBASE_SERVICE_ACCOUNT_PROJECT_ID
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY_ID
       secret: FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY_ID
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY
       secret: FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL
       secret: FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_CLIENT_ID
       secret: FIREBASE_SERVICE_ACCOUNT_CLIENT_ID
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_AUTH_URI
       secret: FIREBASE_SERVICE_ACCOUNT_AUTH_URI
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_TOKEN_URI
       secret: FIREBASE_SERVICE_ACCOUNT_TOKEN_URI
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL
       secret: FIREBASE_SERVICE_ACCOUNT_AUTH_PROVIDER_X509_CERT_URL
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_CLIENT_X509_CERT_URL
       secret: FIREBASE_SERVICE_ACCOUNT_CLIENT_X509_CERT_URL
+      availability:
+        - RUNTIME
     - variable: FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN
       secret: FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN
+      availability:
+        - RUNTIME
 
 buildConfig:
   buildCommand: npm run build
