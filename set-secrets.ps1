@@ -33,3 +33,4 @@ Write-Host "Setting Firebase App Hosting secrets for project: $projectId" -Foreg
 
 Write-Host "All secrets have been set!" -ForegroundColor Green
 
+

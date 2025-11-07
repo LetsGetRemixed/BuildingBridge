@@ -17,3 +17,4 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "[FAILED] Could not grant access to secrets" -ForegroundColor Red
 }
 
+

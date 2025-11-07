@@ -36,3 +36,4 @@ firebase apphosting:secrets:set FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN --data 
 echo "All secrets have been set!"
 echo "Note: NEXT_PUBLIC_* variables are public and will be exposed in the client bundle."
 
+

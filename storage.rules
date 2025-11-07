@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service firebase.storage {
+  function isBackendUpload() {
+    // Firebase Admin SDK and signed uploads don't populate request.auth.
+    // We rely on upload endpoints to enforce auth and only expose limited
+    // directories for image uploads.
+    return request.auth == null;
+  }
+
+  function isValidImageUpload() {
+    return request.resource != null
+      && request.resource.size < 5 * 1024 * 1024
+      && request.resource.contentType.matches('image/.*');
+  }
+
+  match /b/{bucket}/o {
+    // Public read access for all files
+    match /{allPaths=**} {
+      allow read: if true;
+    }
+
+    // Restrict image uploads for admin-managed collections
+    match /events/{fileName} {
+      allow create, update: if isBackendUpload() && isValidImageUpload();
+      allow delete: if isBackendUpload();
+    }
+
+    match /partners/{fileName} {
+      allow create, update: if isBackendUpload() && isValidImageUpload();
+      allow delete: if isBackendUpload();
+    }
+
+    match /team-members/{fileName} {
+      allow create, update: if isBackendUpload() && isValidImageUpload();
+      allow delete: if isBackendUpload();
+    }
+
+    // Block all other client-side writes by default
+    match /{otherPaths=**} {
+      allow write: if false;
+    }
+  }
+}
+

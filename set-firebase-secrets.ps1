@@ -35,3 +35,4 @@ firebase apphosting:secrets:set FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN --data 
 Write-Host "All secrets have been set!" -ForegroundColor Green
 Write-Host "Note: NEXT_PUBLIC_* variables are public and will be exposed in the client bundle." -ForegroundColor Yellow
 
+

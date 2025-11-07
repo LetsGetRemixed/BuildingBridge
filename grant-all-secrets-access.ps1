@@ -41,3 +41,4 @@ foreach ($secret in $secrets) {
 Write-Host ""
 Write-Host "All secrets have been processed!" -ForegroundColor Green
 
+
