@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import EventModal from '@/components/EventModal'
 
@@ -26,6 +26,8 @@ export default function EventsPage() {
   const [error, setError] = useState<string | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showModal, setShowModal] = useState(false)
+  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({})
+  const eventsSectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -48,6 +50,35 @@ export default function EventsPage() {
     }
 
     fetchEvents()
+  }, [])
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible((prev) => ({
+            ...prev,
+            [entry.target.id]: true
+          }))
+        }
+      })
+    }, observerOptions)
+
+    if (eventsSectionRef.current) {
+      observer.observe(eventsSectionRef.current)
+    }
+
+    return () => {
+      if (eventsSectionRef.current) {
+        observer.unobserve(eventsSectionRef.current)
+      }
+    }
   }, [])
 
   const handleEventClick = (event: Event) => {
@@ -82,12 +113,12 @@ export default function EventsPage() {
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="inline-block mb-4">
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white border-b-2 border-white w-fit mx-auto pb-3">
+            <div className="inline-block mb-4 animate-fade-in-up">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white border-b-2 border-white w-fit mx-auto pb-3" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
                 Events & Initiatives
               </h1>
             </div>
-            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mt-6">
+            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mt-6 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
               Discover our community events and initiatives that make a difference.
             </p>
           </div>
@@ -95,7 +126,13 @@ export default function EventsPage() {
       </section>
 
       {/* Events List Section */}
-      <section className="py-16 md:py-24 relative overflow-hidden">
+      <section 
+        ref={eventsSectionRef}
+        id="events-list-section"
+        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['events-list-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/mainbackground2.png"
@@ -122,7 +159,7 @@ export default function EventsPage() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {events.map((event) => {
+              {events.map((event, idx) => {
                 const eventDate = new Date(event.date)
                 const formattedDate = eventDate.toLocaleDateString('en-US', {
                   month: 'long',
@@ -134,7 +171,10 @@ export default function EventsPage() {
                   <div
                     key={event._id}
                     onClick={() => handleEventClick(event)}
-                    className="group relative cursor-pointer"
+                    className={`group relative cursor-pointer transition-all duration-700 ${
+                      isVisible['events-list-section'] ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+                    }`}
+                    style={{ transitionDelay: `${0.2 + (idx * 0.1)}s` }}
                   >
                     <div className="relative h-full rounded-2xl overflow-hidden bg-white border-2 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2" style={{ borderColor: '#e5e7eb' }}>
                       {/* Image */}

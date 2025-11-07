@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import EventModal from '@/components/EventModal'
 
 const foundationGreen = '#2E7D32'
@@ -52,6 +52,13 @@ export default function About() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([])
   const [teamMembersLoading, setTeamMembersLoading] = useState(true)
   const [teamMembersError, setTeamMembersError] = useState<string | null>(null)
+
+  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({})
+  const missionSectionRef = useRef<HTMLElement>(null)
+  const pillarsSectionRef = useRef<HTMLElement>(null)
+  const partnersSectionRef = useRef<HTMLElement>(null)
+  const eventsSectionRef = useRef<HTMLElement>(null)
+  const teamSectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -123,6 +130,43 @@ export default function About() {
     fetchTeamMembers()
   }, [])
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible((prev) => ({
+            ...prev,
+            [entry.target.id]: true
+          }))
+        }
+      })
+    }, observerOptions)
+
+    const sections = [
+      missionSectionRef.current,
+      pillarsSectionRef.current,
+      partnersSectionRef.current,
+      eventsSectionRef.current,
+      teamSectionRef.current
+    ].filter(Boolean) as Element[]
+
+    sections.forEach((section) => {
+      if (section) observer.observe(section)
+    })
+
+    return () => {
+      sections.forEach((section) => {
+        if (section) observer.unobserve(section)
+      })
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -143,12 +187,12 @@ export default function About() {
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="inline-block mb-4">
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white border-b-2 border-white w-fit mx-auto pb-3">
+            <div className="inline-block mb-4 animate-fade-in-up">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white border-b-2 border-white w-fit mx-auto pb-3" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
                 About Us
               </h1>
             </div>
-            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mt-6">
+            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mt-6 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
               Building bridges, strengthening communities. Learn about our mission, values, and the people driving change.
             </p>
           </div>
@@ -156,7 +200,13 @@ export default function About() {
       </section>
 
       {/* Mission & Vision Section */}
-      <section className="py-16 md:py-24 relative overflow-hidden">
+      <section 
+        ref={missionSectionRef}
+        id="mission-section"
+        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['mission-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -184,7 +234,9 @@ export default function About() {
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             {/* Mission Card */}
-            <div className="group relative">
+            <div className={`group relative transition-all duration-700 ${
+              isVisible['mission-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.2s' }}>
               <div 
                 className="absolute -z-10 inset-0 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-2xl"
                 style={{ 
@@ -278,7 +330,9 @@ export default function About() {
             </div>
 
             {/* Vision Card */}
-            <div className="group relative">
+            <div className={`group relative transition-all duration-700 ${
+              isVisible['mission-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.4s' }}>
               <div 
                 className="absolute -z-10 inset-0 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-2xl"
                 style={{ 
@@ -387,7 +441,13 @@ export default function About() {
       </section>
 
       {/* Pillars Overview */}
-      <section id="pillars" className="py-16 md:py-24 relative overflow-hidden">
+      <section 
+        ref={pillarsSectionRef}
+        id="pillars-section"
+        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['pillars-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -400,8 +460,12 @@ export default function About() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>Our Pillars</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className={`font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto transition-all duration-700 ${
+              isVisible['pillars-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`} style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>Our Pillars</h2>
+            <p className={`text-lg text-gray-600 max-w-2xl mx-auto transition-all duration-700 ${
+              isVisible['pillars-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`} style={{ transitionDelay: '0.1s' }}>
               The foundation of our mission rests on five core pillars that guide everything we do
             </p>
           </div>
@@ -438,7 +502,14 @@ export default function About() {
                 description: 'Fostering connections and collective growth'
               },
             ].map((p, index) => (
-              <Link key={p.title} href={p.href} className="block group">
+              <Link 
+                key={p.title} 
+                href={p.href} 
+                className={`block group transition-all duration-700 ${
+                  isVisible['pillars-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${0.2 + (index * 0.1)}s` }}
+              >
                 <div className="relative h-full rounded-2xl p-6 md:p-8 bg-white border-2 transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-2" 
                      style={{ 
                        borderColor: '#e5e7eb',
@@ -509,7 +580,13 @@ export default function About() {
       </section>
 
       {/* Partnerships Section */}
-      <section id="partnerships" className="py-16 md:py-24 relative overflow-hidden">
+      <section 
+        ref={partnersSectionRef}
+        id="partners-section"
+        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['partners-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -524,12 +601,16 @@ export default function About() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12 md:mb-16">
-            <div className="inline-block mb-4">
+            <div className={`inline-block mb-4 transition-all duration-700 ${
+              isVisible['partners-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
               <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
                 Our Partners
               </h2>
             </div>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
+            <p className={`text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6 transition-all duration-700 ${
+              isVisible['partners-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`} style={{ transitionDelay: '0.1s' }}>
               Building stronger communities together through meaningful partnerships
             </p>
           </div>
@@ -550,7 +631,13 @@ export default function About() {
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-12">
               {partners.map((partner, idx) => (
-                <div key={partner._id || idx} className="group relative">
+                <div 
+                  key={partner._id || idx} 
+                  className={`group relative transition-all duration-700 ${
+                    isVisible['partners-section'] ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+                  }`}
+                  style={{ transitionDelay: `${0.2 + (idx * 0.05)}s` }}
+                >
                   <div 
                     className="relative h-full bg-white rounded-2xl p-6 md:p-8 border-2 transition-all duration-500 shadow-lg hover:shadow-2xl hover:-translate-y-3 overflow-hidden"
                     style={{ 
@@ -617,7 +704,13 @@ export default function About() {
       </section>
 
       {/* Recent Events / Initiatives */}
-      <section id="events" className="py-16 md:py-24 relative overflow-hidden">
+      <section 
+        ref={eventsSectionRef}
+        id="events-section"
+        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['events-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -630,12 +723,16 @@ export default function About() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12 md:mb-16">
-            <div className="inline-block mb-4">
+            <div className={`inline-block mb-4 transition-all duration-700 ${
+              isVisible['events-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
               <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
                 Recent Events & Initiatives
               </h2>
             </div>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
+            <p className={`text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6 transition-all duration-700 ${
+              isVisible['events-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`} style={{ transitionDelay: '0.1s' }}>
               See the impact we&apos;re making in our community through recent events and programs
             </p>
           </div>
@@ -665,7 +762,10 @@ export default function About() {
                 return (
                   <div
                     key={event._id || idx}
-                    className="group relative cursor-pointer"
+                    className={`group relative cursor-pointer transition-all duration-700 ${
+                      isVisible['events-section'] ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+                    }`}
+                    style={{ transitionDelay: `${0.2 + (idx * 0.1)}s` }}
                     onClick={() => {
                       setSelectedEvent(event)
                       setShowModal(true)
@@ -730,7 +830,13 @@ export default function About() {
       </section>
 
       {/* Meet Our Team Section */}
-      <section className="py-16 md:py-24 relative overflow-hidden">
+      <section 
+        ref={teamSectionRef}
+        id="team-section"
+        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['team-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -745,12 +851,16 @@ export default function About() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12 md:mb-16">
-            <div className="inline-block mb-4">
+            <div className={`inline-block mb-4 transition-all duration-700 ${
+              isVisible['team-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
               <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
                 Meet Our Team
               </h2>
             </div>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
+            <p className={`text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6 transition-all duration-700 ${
+              isVisible['team-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`} style={{ transitionDelay: '0.1s' }}>
               The dedicated individuals who drive our mission forward
             </p>
           </div>
@@ -769,8 +879,14 @@ export default function About() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-              {teamMembers.map((member) => (
-                <div key={member._id} className="group relative">
+              {teamMembers.map((member, idx) => (
+                <div 
+                  key={member._id} 
+                  className={`group relative transition-all duration-700 ${
+                    isVisible['team-section'] ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+                  }`}
+                  style={{ transitionDelay: `${0.2 + (idx * 0.1)}s` }}
+                >
                   <div className="relative h-full rounded-2xl p-8 bg-white border-2 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden"
                        style={{ 
                          borderColor: '#e5e7eb',

@@ -2,12 +2,51 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 
 const foundationGreen = '#2E7D32'
 const foundationBrown = '#6D4C41'
 const foundationOrange = '#EF6C00'
 
 export default function Contact() {
+  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({})
+  const contactSectionRef = useRef<HTMLElement>(null)
+  const mapSectionRef = useRef<HTMLElement>(null)
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible((prev) => ({
+            ...prev,
+            [entry.target.id]: true
+          }))
+        }
+      })
+    }, observerOptions)
+
+    const sections = [
+      contactSectionRef.current,
+      mapSectionRef.current
+    ].filter(Boolean) as Element[]
+
+    sections.forEach((section) => {
+      if (section) observer.observe(section)
+    })
+
+    return () => {
+      sections.forEach((section) => {
+        if (section) observer.unobserve(section)
+      })
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -28,12 +67,12 @@ export default function Contact() {
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16">
-            <div className="inline-block mb-4">
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white border-b-2 border-white w-fit mx-auto pb-3">
+            <div className="inline-block mb-4 animate-fade-in-up">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white border-b-2 border-white w-fit mx-auto pb-3" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
                 Get in touch with us
               </h1>
             </div>
-            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mt-6">
+            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mt-6 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
               We&apos;d love to hear from you. Reach out to us at our office or send us an email.
             </p>
           </div>
@@ -41,7 +80,13 @@ export default function Contact() {
       </section>
 
       {/* Contact Information */}
-      <section className="py-16 md:py-24 relative overflow-hidden">
+      <section 
+        ref={contactSectionRef}
+        id="contact-info-section"
+        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['contact-info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -58,7 +103,9 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
             {/* Jackson County Office */}
-            <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-8">
+            <div className={`flex flex-col md:flex-row md:items-start gap-6 md:gap-8 transition-all duration-700 ${
+              isVisible['contact-info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.2s' }}>
               <div className="flex-shrink-0">
                 <div className="w-12 h-12 flex items-center justify-center" style={{ color: foundationGreen }}>
                   <svg 
@@ -90,7 +137,9 @@ export default function Contact() {
             </div>
 
             {/* Comal County Office */}
-            <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-8">
+            <div className={`flex flex-col md:flex-row md:items-start gap-6 md:gap-8 transition-all duration-700 ${
+              isVisible['contact-info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.4s' }}>
               <div className="flex-shrink-0">
                 <div className="w-12 h-12 flex items-center justify-center" style={{ color: foundationOrange }}>
                   <svg 
@@ -122,7 +171,9 @@ export default function Contact() {
             </div>
 
             {/* Phone */}
-            <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-8">
+            <div className={`flex flex-col md:flex-row md:items-start gap-6 md:gap-8 transition-all duration-700 ${
+              isVisible['contact-info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.6s' }}>
               <div className="flex-shrink-0">
                 <div className="w-12 h-12 flex items-center justify-center" style={{ color: foundationBrown }}>
                   <svg 
@@ -158,7 +209,9 @@ export default function Contact() {
             </div>
 
             {/* Email */}
-            <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-8">
+            <div className={`flex flex-col md:flex-row md:items-start gap-6 md:gap-8 transition-all duration-700 ${
+              isVisible['contact-info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.8s' }}>
               <div className="flex-shrink-0">
                 <div className="w-12 h-12 flex items-center justify-center" style={{ color: foundationGreen }}>
                   <svg 
@@ -197,22 +250,34 @@ export default function Contact() {
       </section>
 
       {/* Map Section */}
-      <section className="py-16 md:py-24 relative overflow-hidden bg-gray-50">
+      <section 
+        ref={mapSectionRef}
+        id="map-section"
+        className={`py-16 md:py-24 relative overflow-hidden bg-gray-50 transition-all duration-1000 ${
+          isVisible['map-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16">
-            <div className="inline-block mb-4">
+            <div className={`inline-block mb-4 transition-all duration-700 ${
+              isVisible['map-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
               <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
                 Find Us
               </h2>
             </div>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
+            <p className={`text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6 transition-all duration-700 ${
+              isVisible['map-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`} style={{ transitionDelay: '0.1s' }}>
               Visit us at one of our office locations
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
             {/* Jackson County Office Map */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-700 ${
+              isVisible['map-section'] ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+            }`} style={{ transitionDelay: '0.2s' }}>
               <div className="p-6 border-b border-gray-200">
                 <h3 className="text-2xl font-heading font-bold mb-2" style={{ color: foundationBrown }}>
                   Jackson County Office
@@ -250,7 +315,9 @@ export default function Contact() {
             </div>
 
             {/* Comal County Office Map */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-700 ${
+              isVisible['map-section'] ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+            }`} style={{ transitionDelay: '0.4s' }}>
               <div className="p-6 border-b border-gray-200">
                 <h3 className="text-2xl font-heading font-bold mb-2" style={{ color: foundationBrown }}>
                   Comal County Office

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import EventModal from '@/components/EventModal'
@@ -33,6 +33,11 @@ export default function Home() {
   const [current, setCurrent] = useState(0)
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showModal, setShowModal] = useState(false)
+  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({})
+  
+  const infoSectionRef = useRef<HTMLElement>(null)
+  const sliderSectionRef = useRef<HTMLElement>(null)
+  const ctaSectionRef = useRef<HTMLElement>(null)
 
   // Convert events to slides format
   const slides: Slide[] = events.map(event => ({
@@ -75,6 +80,41 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [slides.length])
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible((prev) => ({
+            ...prev,
+            [entry.target.id]: true
+          }))
+        }
+      })
+    }, observerOptions)
+
+    const sections = [
+      infoSectionRef.current,
+      sliderSectionRef.current,
+      ctaSectionRef.current
+    ].filter(Boolean) as Element[]
+
+    sections.forEach((section) => {
+      if (section) observer.observe(section)
+    })
+
+    return () => {
+      sections.forEach((section) => {
+        if (section) observer.unobserve(section)
+      })
+    }
+  }, [])
+
   return (
     <div className="min-h-screen">
       {/* Hero */}
@@ -88,9 +128,11 @@ export default function Home() {
       >
         <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.55) 100%)' }} />
         <div className="relative z-10 text-center px-6">
-          <div className="mb-6 flex justify-center">
-            <div className="relative rounded-2xl p-0.5 shadow-lg" style={{
-              background: `linear-gradient(135deg, ${foundationGreen}, ${foundationOrange}, ${foundationBrown}, ${foundationGreen})`
+          <div className="mb-6 flex justify-center animate-fade-in-up">
+            <div className="relative rounded-2xl p-0.5 shadow-lg animate-scale-in" style={{
+              background: `linear-gradient(135deg, ${foundationGreen}, ${foundationOrange}, ${foundationBrown}, ${foundationGreen})`,
+              animationDelay: '0.2s',
+              animationFillMode: 'both'
             }}>
               <div className="bg-white rounded-2xl p-4 md:p-6 relative">
                 {/* Decorative corner brackets */}
@@ -122,16 +164,16 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <h1 className="font-heading text-white text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+          <h1 className="font-heading text-white text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
             Building Bridges, Strengthening Communities.
           </h1>
-          <p className="mt-3 text-white/90 max-w-2xl mx-auto text-sm md:text-base">
+          <p className="mt-3 text-white/90 max-w-2xl mx-auto text-sm md:text-base animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
             Empowering families through education, life skills, and community partnerships.
           </p>
           <Link
             href="/about"
-            className="inline-block mt-6 px-6 py-3 rounded-md text-white font-semibold"
-            style={{ backgroundColor: foundationGreen }}
+            className="inline-block mt-6 px-6 py-3 rounded-md text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg animate-fade-in-up"
+            style={{ backgroundColor: foundationGreen, animationDelay: '0.8s', animationFillMode: 'both' }}
           >
             Learn More
           </Link>
@@ -139,7 +181,13 @@ export default function Home() {
       </section>
 
       {/* Info Section */}
-      <section className="py-16 md:py-24 relative overflow-hidden">
+      <section 
+        ref={infoSectionRef}
+        id="info-section"
+        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -155,18 +203,24 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12 md:mb-16">
-            <div className="inline-block mb-4">
+            <div className={`inline-block mb-4 transition-all duration-700 ${
+              isVisible['info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
               <h2 className="font-heading text-4xl md:text-4xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
               A Foundation that bridges Community and Care
               </h2>
             </div>
-            <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto mt-6">
+            <p className={`text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto mt-6 transition-all duration-700 ${
+              isVisible['info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`} style={{ transitionDelay: '0.1s' }}>
               The Building Bridge Foundation supports Texas nonprofit organizations that assist people to help themselves while nurturing and preserving their self-respect. The Foundation encourages endeavors that strengthen families and communities, with particular interest in self-sufficiency, community development, and programs aimed at the economically disadvantaged, children and youth, seniors, and the disabled.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
-            <div className="text-center group">
+            <div className={`text-center group transition-all duration-700 ${
+              isVisible['info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.2s' }}>
               <div className="relative inline-flex items-center justify-center mb-6">
               <div className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-300 blur-xl"
                    style={{ background: foundationGreen, transform: 'scale(1.5)' }} />
@@ -185,7 +239,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="text-center group">
+            <div className={`text-center group transition-all duration-700 ${
+              isVisible['info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.4s' }}>
               <div className="relative inline-flex items-center justify-center mb-6">
               <div className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-300 blur-xl"
                    style={{ background: foundationOrange, transform: 'scale(1.5)' }} />
@@ -204,7 +260,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="text-center group">
+            <div className={`text-center group transition-all duration-700 ${
+              isVisible['info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '0.6s' }}>
               <div className="relative inline-flex items-center justify-center mb-6">
               <div className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-300 blur-xl"
                    style={{ background: foundationBrown, transform: 'scale(1.5)' }} />
@@ -227,7 +285,13 @@ export default function Home() {
       </section>
 
       {/* Recent Initiatives Slider */}
-      <section className="py-12 md:py-16 relative overflow-hidden">
+      <section 
+        ref={sliderSectionRef}
+        id="slider-section"
+        className={`py-12 md:py-16 relative overflow-hidden transition-all duration-1000 ${
+          isVisible['slider-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -242,20 +306,20 @@ export default function Home() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold" style={{ color: foundationBrown }}>Recent Initiatives</h2>
+            <h2 className="font-heading text-2xl md:text-3xl font-bold transition-all duration-500" style={{ color: foundationBrown }}>Recent Initiatives</h2>
             {slides.length > 0 && (
               <div className="flex items-center space-x-2">
                 <button
                   aria-label="Previous slide"
                   onClick={() => setCurrent((c) => (c - 1 + slides.length) % slides.length)}
-                  className="h-9 w-9 rounded-full border flex items-center justify-center text-gray-600 hover:bg-gray-50"
+                  className="h-9 w-9 rounded-full border flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-all duration-300 hover:scale-110 hover:shadow-md"
                 >
                   ‹
                 </button>
                 <button
                   aria-label="Next slide"
                   onClick={() => setCurrent((c) => (c + 1) % slides.length)}
-                  className="h-9 w-9 rounded-full border flex items-center justify-center text-gray-600 hover:bg-gray-50"
+                  className="h-9 w-9 rounded-full border flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-all duration-300 hover:scale-110 hover:shadow-md"
                 >
                   ›
                 </button>
@@ -283,7 +347,7 @@ export default function Home() {
           ) : (
             <>
               <div
-                className="relative overflow-hidden rounded-lg border bg-gray-10 cursor-pointer hover:opacity-95 transition-opacity"
+                className="relative overflow-hidden rounded-lg border bg-gray-10 cursor-pointer hover:opacity-95 transition-all duration-500"
                 style={{ borderColor: '#e5e7eb' }}
                 onClick={() => {
                   if (events[current]) {
@@ -294,7 +358,7 @@ export default function Home() {
               >
                 <div className="relative w-full h-72 md:h-96 lg:h-[500px]">
                   {/* Blurred background version */}
-                  <div className="absolute inset-0 z-0">
+                  <div className="absolute inset-0 z-0 transition-opacity duration-700">
                     <Image
                       src={slides[current].src}
                       alt=""
@@ -308,16 +372,17 @@ export default function Home() {
                   {/* Current slide - sharp foreground */}
                   <div className="absolute inset-0 z-10 flex items-center justify-center">
                     <Image
+                      key={current}
                       src={slides[current].src}
                       alt={slides[current].caption}
                       fill
                       sizes="(max-width: 768px) 100vw, 1200px"
-                      className="object-contain"
+                      className="object-contain transition-all duration-700 animate-fade-in"
                       unoptimized
                     />
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 z-20" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 10%)' }}>
-                    <p className="text-white text-sm md:text-base">{slides[current].caption}</p>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transition-all duration-500" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 10%)' }}>
+                    <p className="text-white text-sm md:text-base transition-all duration-300">{slides[current].caption}</p>
                     <p className="text-white/80 text-xs mt-1">Click to read more</p>
                   </div>
                 </div>
@@ -328,7 +393,11 @@ export default function Home() {
                     key={i}
                     aria-label={`Go to slide ${i + 1}`}
                     onClick={() => setCurrent(i)}
-                    className={`h-2 w-2 rounded-full ${i === current ? 'bg-gray-800' : 'bg-gray-300'}`}
+                    className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                      i === current 
+                        ? 'bg-gray-800 w-8' 
+                        : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
                   />
                 ))}
               </div>
@@ -338,7 +407,14 @@ export default function Home() {
       </section>
 
       {/* Call to Action */}
-      <section className="relative py-8 md:py-10 overflow-hidden" style={{ backgroundColor: foundationGreen }}>
+      <section 
+        ref={ctaSectionRef}
+        id="cta-section"
+        className={`relative py-8 md:py-10 overflow-hidden transition-all duration-1000 ${
+          isVisible['cta-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+        style={{ backgroundColor: foundationGreen }}
+      >
         {/* Decorative background elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-64 h-64 rounded-full" style={{ background: `radial-gradient(circle, ${foundationOrange} 0%, transparent 70%)`, transform: 'translate(-30%, -30%)' }} />
