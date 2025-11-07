@@ -128,57 +128,24 @@ export default function EventsManagement() {
       throw new Error('Authentication required')
     }
 
-    const contentType = imageFile.type || 'application/octet-stream'
+    const formData = new FormData()
+    formData.append('file', imageFile)
 
-    const signedResponse = await fetch('/api/admin/events/upload', {
+    const response = await fetch('/api/admin/events/upload', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({
-        fileName: imageFile.name,
-        contentType
-      })
+      body: formData
     })
 
-    if (!signedResponse.ok) {
-      const data = await signedResponse.json()
-      throw new Error(data.error || 'Failed to create upload URL')
+    if (!response.ok) {
+      const data = await response.json()
+      throw new Error(data.error || 'Failed to upload image')
     }
 
-    const { uploadUrl, filePath, publicUrl } = await signedResponse.json()
-
-    const uploadHeaders: Record<string, string> = {
-      'Content-Type': contentType
-    }
-
-    const uploadResponse = await fetch(uploadUrl, {
-      method: 'PUT',
-      headers: uploadHeaders,
-      body: imageFile
-    })
-
-    if (!uploadResponse.ok) {
-      throw new Error('Failed to upload image to storage')
-    }
-
-    const commitResponse = await fetch('/api/admin/events/upload/commit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ filePath })
-    })
-
-    if (!commitResponse.ok) {
-      const data = await commitResponse.json()
-      throw new Error(data.error || 'Failed to finalize image upload')
-    }
-
-    const commitData = await commitResponse.json()
-    return commitData.publicUrl || publicUrl
+    const data = await response.json()
+    return data.url
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

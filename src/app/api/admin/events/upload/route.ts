@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/jwt'
 import { findUserByEmail } from '@/lib/user'
 import { adminStorage, getAdminBucket } from '@/lib/firebase-admin'
-import { randomUUID } from 'crypto'
+import { Buffer } from 'buffer'
 
-// Request a signed upload URL for Firebase Storage (GCS)
+export const runtime = 'nodejs'
+
+// Handle multipart uploads directly via Firebase Admin SDK
 export async function POST(request: NextRequest) {
   try {
     // Verify admin authentication
@@ -32,58 +34,63 @@ export async function POST(request: NextRequest) {
       }, { status: 500 })
     }
 
-    const { contentType, fileName } = await request.json()
+    const formData = await request.formData()
+    const file = formData.get('file') as File | null
 
-    if (!contentType || typeof contentType !== 'string' || !contentType.startsWith('image/')) {
-      return NextResponse.json({ error: 'Invalid or missing image contentType' }, { status: 400 })
+    if (!file) {
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
 
-    const safeBaseName = typeof fileName === 'string' && fileName.trim().length > 0
-      ? fileName.trim().toLowerCase().replace(/[^a-z0-9.\-_]/g, '_')
-      : `image_${Date.now()}`
-
-    const allowedExt = new Set(['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'svg'])
-    const extFromName = safeBaseName.includes('.') ? (safeBaseName.split('.').pop() || '').toLowerCase() : ''
-    const extensionMap: Record<string, string> = {
-      'image/jpeg': 'jpg',
-      'image/jpg': 'jpg',
-      'image/png': 'png',
-      'image/webp': 'webp',
-      'image/gif': 'gif',
-      'image/bmp': 'bmp',
-      'image/tiff': 'tiff',
-      'image/svg+xml': 'svg'
+    if (!file.type.startsWith('image/')) {
+      return NextResponse.json({ error: 'File must be an image' }, { status: 400 })
     }
-    const typeExt = extensionMap[contentType] || (contentType.split('/').pop() || '').toLowerCase() || 'jpg'
-    const candidateExt = extFromName && allowedExt.has(extFromName) ? extFromName : typeExt
-    const safeExt = allowedExt.has(candidateExt) ? candidateExt : 'jpg'
 
-    const uniqueId = `${Date.now()}-${randomUUID()}`
-    const filePath = `events/${uniqueId}.${safeExt}`
+    const maxSize = 5 * 1024 * 1024 // 5MB
+    if (file.size > maxSize) {
+      return NextResponse.json({ error: 'File size must be less than 5MB' }, { status: 400 })
+    }
+
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    const sanitizedName = file.name
+      .toLowerCase()
+      .replace(/[^a-z0-9.\-_]/g, '_')
+    const timestamp = Date.now()
+    const filePath = `events/${timestamp}_${sanitizedName}`
 
     const bucket = getAdminBucket()
-    const file = bucket.file(filePath)
+    const fileRef = bucket.file(filePath)
 
-    const expires = Date.now() + 15 * 60 * 1000 // 15 minutes
-    const [uploadUrl] = await file.getSignedUrl({
-      version: 'v4',
-      action: 'write',
-      expires,
-      contentType
+    await fileRef.save(buffer, {
+      metadata: {
+        contentType: file.type,
+      },
     })
 
-    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${encodeURI(filePath)}`
+    await fileRef.makePublic()
+
+    try {
+      await fileRef.setMetadata({ cacheControl: 'no-cache, max-age=0' })
+    } catch (_) {
+      // Non-fatal
+    }
+
+    const [meta] = await fileRef.getMetadata()
+    const generation = meta?.generation ?? ''
+
+    const baseUrl = `https://storage.googleapis.com/${bucket.name}/${encodeURI(filePath)}`
+    const downloadURL = generation ? `${baseUrl}?v=${generation}` : baseUrl
 
     return NextResponse.json({
-      uploadUrl,
-      filePath,
-      publicUrl,
-      expiresAt: new Date(expires).toISOString()
+      message: 'File uploaded successfully',
+      url: downloadURL,
+      fileName: filePath
     })
   } catch (error: any) {
-    console.error('Error creating signed upload URL:', error)
+    console.error('Error uploading file:', error)
     return NextResponse.json({ 
-      error: error.message || 'Failed to create signed upload URL' 
+      error: error.message || 'Internal server error' 
     }, { status: 500 })
   }
 }
