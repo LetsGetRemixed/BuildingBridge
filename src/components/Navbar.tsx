@@ -132,6 +132,14 @@ export default function Navbar() {
             </div>
 
             <Link 
+              href="/events" 
+              className="font-heading text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 px-3 lg:px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-50 relative group"
+            >
+              <span className="relative z-10">Events</span>
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 group-hover:h-1 opacity-0 group-hover:opacity-100" style={{ background: foundationOrange }} />
+            </Link>
+
+            <Link 
               href="/contact" 
               className="font-heading text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 px-3 lg:px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-50 relative group"
             >
@@ -227,6 +235,14 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+            
+            <Link 
+              href="/events" 
+              className="font-heading block px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+              onClick={closeMobileMenu}
+            >
+              Events
+            </Link>
             
             <Link 
               href="/contact" 

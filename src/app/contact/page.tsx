@@ -195,6 +195,100 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* Map Section */}
+      <section className="py-16 md:py-24 relative overflow-hidden bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <div className="inline-block mb-4">
+              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
+                Find Us
+              </h2>
+            </div>
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
+              Visit us at one of our office locations
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+            {/* Jackson County Office Map */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <h3 className="text-2xl font-heading font-bold mb-2" style={{ color: foundationBrown }}>
+                  Jackson County Office
+                </h3>
+                <p className="text-gray-600">
+                  305 N Allen St<br />
+                  Edna, TX 77957
+                </p>
+              </div>
+              <div className="relative w-full h-96">
+                <iframe
+                  src="https://www.google.com/maps?q=305+N+Allen+St,+Edna,+TX+77957&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0"
+                />
+              </div>
+              <div className="p-4 bg-gray-50">
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=305+N+Allen+St,+Edna,+TX+77957"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                >
+                  Get Directions
+                  <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Comal County Office Map */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <h3 className="text-2xl font-heading font-bold mb-2" style={{ color: foundationBrown }}>
+                  Comal County Office
+                </h3>
+                <p className="text-gray-600">
+                  408 South Seguin Avenue<br />
+                  New Braunfels, Texas 78130
+                </p>
+              </div>
+              <div className="relative w-full h-96">
+                <iframe
+                  src="https://www.google.com/maps?q=408+South+Seguin+Avenue,+New+Braunfels,+TX+78130&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0"
+                />
+              </div>
+              <div className="p-4 bg-gray-50">
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=408+South+Seguin+Avenue,+New+Braunfels,+TX+78130"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                >
+                  Get Directions
+                  <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

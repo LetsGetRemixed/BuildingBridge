@@ -66,6 +66,8 @@ export default function AdminLayout({
     { name: 'Dashboard', href: '/admin', current: pathname === '/admin' },
     { name: 'User Management', href: '/admin/users', current: pathname === '/admin/users' },
     { name: 'Events', href: '/admin/events', current: pathname === '/admin/events' },
+    { name: 'Partners', href: '/admin/partners', current: pathname === '/admin/partners' },
+    { name: 'Team Members', href: '/admin/team-members', current: pathname === '/admin/team-members' },
   ]
 
   return (

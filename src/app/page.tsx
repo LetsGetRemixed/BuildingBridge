@@ -3,10 +3,23 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import EventModal from '@/components/EventModal'
 
 type Slide = {
   src: string
   caption: string
+}
+
+interface Event {
+  _id?: string
+  title: string
+  description: string
+  date: Date | string
+  imageUrl: string
+  location?: string
+  category?: string
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 const foundationGreen = '#2E7D32'
@@ -14,15 +27,48 @@ const foundationBrown = '#6D4C41'
 const foundationOrange = '#EF6C00'
 
 export default function Home() {
-  const slides: Slide[] = [
-    { src: '/images/BBF 4.JPG', caption: 'Back-to-school supply drive' },
-    { src: '/images/BBF 5.JPG', caption: 'Community mentorship event' },
-    { src: '/images/BBF 3.jpg', caption: 'Weekend learning workshop' },
-  ]
-
+  const [events, setEvents] = useState<Event[]>([])
+  const [eventsLoading, setEventsLoading] = useState(true)
+  const [eventsError, setEventsError] = useState<string | null>(null)
   const [current, setCurrent] = useState(0)
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
+  const [showModal, setShowModal] = useState(false)
 
+  // Convert events to slides format
+  const slides: Slide[] = events.map(event => ({
+    src: event.imageUrl,
+    caption: event.title
+  }))
+
+  // Fetch events from backend
   useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setEventsLoading(true)
+        const response = await fetch('/api/events?limit=3')
+        if (!response.ok) {
+          throw new Error('Failed to fetch events')
+        }
+        const data = await response.json()
+        // Get the first 3 events (already sorted by date descending)
+        setEvents((data.events || []).slice(0, 3))
+        setEventsError(null)
+      } catch (error) {
+        console.error('Error fetching events:', error)
+        setEventsError('Failed to load events')
+        setEvents([])
+      } finally {
+        setEventsLoading(false)
+      }
+    }
+
+    fetchEvents()
+  }, [])
+
+  // Auto-advance slider
+  useEffect(() => {
+    if (slides.length === 0) return
+    
     const interval = setInterval(() => {
       setCurrent((c) => (c + 1) % slides.length)
     }, 4500)
@@ -197,63 +243,97 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-heading text-2xl md:text-3xl font-bold" style={{ color: foundationBrown }}>Recent Initiatives</h2>
-            <div className="flex items-center space-x-2">
-              <button
-                aria-label="Previous slide"
-                onClick={() => setCurrent((c) => (c - 1 + slides.length) % slides.length)}
-                className="h-9 w-9 rounded-full border flex items-center justify-center text-gray-600 hover:bg-gray-50"
-              >
-                ‹
-              </button>
-              <button
-                aria-label="Next slide"
-                onClick={() => setCurrent((c) => (c + 1) % slides.length)}
-                className="h-9 w-9 rounded-full border flex items-center justify-center text-gray-600 hover:bg-gray-50"
-              >
-                ›
-              </button>
-            </div>
+            {slides.length > 0 && (
+              <div className="flex items-center space-x-2">
+                <button
+                  aria-label="Previous slide"
+                  onClick={() => setCurrent((c) => (c - 1 + slides.length) % slides.length)}
+                  className="h-9 w-9 rounded-full border flex items-center justify-center text-gray-600 hover:bg-gray-50"
+                >
+                  ‹
+                </button>
+                <button
+                  aria-label="Next slide"
+                  onClick={() => setCurrent((c) => (c + 1) % slides.length)}
+                  className="h-9 w-9 rounded-full border flex items-center justify-center text-gray-600 hover:bg-gray-50"
+                >
+                  ›
+                </button>
+              </div>
+            )}
           </div>
-          <div className="relative overflow-hidden rounded-lg border bg-gray-10" style={{ borderColor: '#e5e7eb' }}>
-            <div className="relative w-full h-72 md:h-96 lg:h-[500px]">
-              {/* Blurred background version */}
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={slides[current].src}
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 100vw, 1200px"
-                  className="object-cover blur-md opacity-90 scale-100"
-                  aria-hidden="true"
-                  priority
-                />
-              </div>
-              {/* Current slide - sharp foreground */}
-              <div className="absolute inset-0 z-10 flex items-center justify-center">
-                <Image
-                  src={slides[current].src}
-                  alt={slides[current].caption}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 1200px"
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-4 z-20" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 10%)' }}>
-                <p className="text-white text-sm md:text-base">{slides[current].caption}</p>
+          {eventsLoading ? (
+            <div className="relative overflow-hidden rounded-lg border bg-gray-10" style={{ borderColor: '#e5e7eb' }}>
+              <div className="relative w-full h-72 md:h-96 lg:h-[500px] flex items-center justify-center">
+                <p className="text-gray-600">Loading initiatives...</p>
               </div>
             </div>
-          </div>
-          <div className="flex justify-center mt-3 space-x-2">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                aria-label={`Go to slide ${i + 1}`}
-                onClick={() => setCurrent(i)}
-                className={`h-2 w-2 rounded-full ${i === current ? 'bg-gray-800' : 'bg-gray-300'}`}
-              />
-            ))}
-          </div>
+          ) : eventsError ? (
+            <div className="relative overflow-hidden rounded-lg border bg-gray-10" style={{ borderColor: '#e5e7eb' }}>
+              <div className="relative w-full h-72 md:h-96 lg:h-[500px] flex items-center justify-center">
+                <p className="text-red-600">{eventsError}</p>
+              </div>
+            </div>
+          ) : slides.length === 0 ? (
+            <div className="relative overflow-hidden rounded-lg border bg-gray-10" style={{ borderColor: '#e5e7eb' }}>
+              <div className="relative w-full h-72 md:h-96 lg:h-[500px] flex items-center justify-center">
+                <p className="text-gray-600">No recent initiatives available at this time.</p>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div
+                className="relative overflow-hidden rounded-lg border bg-gray-10 cursor-pointer hover:opacity-95 transition-opacity"
+                style={{ borderColor: '#e5e7eb' }}
+                onClick={() => {
+                  if (events[current]) {
+                    setSelectedEvent(events[current])
+                    setShowModal(true)
+                  }
+                }}
+              >
+                <div className="relative w-full h-72 md:h-96 lg:h-[500px]">
+                  {/* Blurred background version */}
+                  <div className="absolute inset-0 z-0">
+                    <Image
+                      src={slides[current].src}
+                      alt=""
+                      fill
+                      sizes="(max-width: 768px) 100vw, 1200px"
+                      className="object-cover blur-md opacity-90 scale-100"
+                      aria-hidden="true"
+                      unoptimized
+                    />
+                  </div>
+                  {/* Current slide - sharp foreground */}
+                  <div className="absolute inset-0 z-10 flex items-center justify-center">
+                    <Image
+                      src={slides[current].src}
+                      alt={slides[current].caption}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 1200px"
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 z-20" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 10%)' }}>
+                    <p className="text-white text-sm md:text-base">{slides[current].caption}</p>
+                    <p className="text-white/80 text-xs mt-1">Click to read more</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center mt-3 space-x-2">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    aria-label={`Go to slide ${i + 1}`}
+                    onClick={() => setCurrent(i)}
+                    className={`h-2 w-2 rounded-full ${i === current ? 'bg-gray-800' : 'bg-gray-300'}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -300,6 +380,17 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Event Detail Modal */}
+      {showModal && selectedEvent && (
+        <EventModal
+          event={selectedEvent}
+          onClose={() => {
+            setShowModal(false)
+            setSelectedEvent(null)
+          }}
+        />
+      )}
     </div>
   )
 }

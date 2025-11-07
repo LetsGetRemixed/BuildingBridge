@@ -2,50 +2,126 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import EventModal from '@/components/EventModal'
 
 const foundationGreen = '#2E7D32'
 const foundationBrown = '#6D4C41'
 const foundationOrange = '#EF6C00'
 
+interface Partner {
+  _id?: string
+  name: string
+  logoUrl: string
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+interface Event {
+  _id?: string
+  title: string
+  description: string
+  date: Date | string
+  imageUrl: string
+  location?: string
+  category?: string
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+interface TeamMember {
+  _id?: string
+  name: string
+  role: string
+  linkedinLink: string
+  createdAt?: Date
+  updatedAt?: Date
+}
+
 export default function About() {
-  const partners = [
-    { src: '/partnerships/christianministries.png', name: 'Christian Ministries' },
-    { src: '/partnerships/Connections.png', name: 'Connections' },
-    { src: '/partnerships/ednabusinessassociation.png', name: 'Edna Business Association' },
-    { src: '/partnerships/food-bank-logo.png', name: 'Food Bank' },
-    { src: '/partnerships/palacios.png', name: 'Palacios' },
-  ]
+  const [partners, setPartners] = useState<Partner[]>([])
+  const [partnersLoading, setPartnersLoading] = useState(true)
+  const [partnersError, setPartnersError] = useState<string | null>(null)
 
-  const recentEvents = [
-    {
-      image: '/images/BBF 4.JPG',
-      caption: 'Back-to-School Supply Drive',
-      date: 'August 2024',
-      description: 'Providing essential school supplies to over 200 students in the community.'
-    },
-    {
-      image: '/images/BBF 5.JPG',
-      caption: 'Community Mentorship Event',
-      date: 'July 2024',
-      description: 'Connecting youth with mentors for guidance and support in personal and academic growth.'
-    },
-    {
-      image: '/images/BBF 3.jpg',
-      caption: 'Weekend Learning Workshop',
-      date: 'June 2024',
-      description: 'Interactive workshops focusing on life skills, financial literacy, and career development.'
-    },
-  ]
+  const [recentEvents, setRecentEvents] = useState<Event[]>([])
+  const [eventsLoading, setEventsLoading] = useState(true)
+  const [eventsError, setEventsError] = useState<string | null>(null)
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
+  const [showModal, setShowModal] = useState(false)
 
-  const teamMembers = [
-    {
-      name: 'Leadership Team',
-      role: 'Board of Directors',
-      bio: 'Our dedicated board members bring decades of combined experience in education, community development, and nonprofit management.',
-      image: '/images/BBF 4.JPG', // Placeholder - replace with actual headshots
-    },
-    // Add more team members as needed
-  ]
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([])
+  const [teamMembersLoading, setTeamMembersLoading] = useState(true)
+  const [teamMembersError, setTeamMembersError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        setPartnersLoading(true)
+        const response = await fetch('/api/partners')
+        if (!response.ok) {
+          throw new Error('Failed to fetch partners')
+        }
+        const data = await response.json()
+        setPartners(data.partners || [])
+        setPartnersError(null)
+      } catch (error) {
+        console.error('Error fetching partners:', error)
+        setPartnersError('Failed to load partners')
+        setPartners([])
+      } finally {
+        setPartnersLoading(false)
+      }
+    }
+
+    fetchPartners()
+  }, [])
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setEventsLoading(true)
+        const response = await fetch('/api/events?limit=3')
+        if (!response.ok) {
+          throw new Error('Failed to fetch events')
+        }
+        const data = await response.json()
+        // Get the first 3 events (already sorted by date descending)
+        setRecentEvents((data.events || []).slice(0, 3))
+        setEventsError(null)
+      } catch (error) {
+        console.error('Error fetching events:', error)
+        setEventsError('Failed to load events')
+        setRecentEvents([])
+      } finally {
+        setEventsLoading(false)
+      }
+    }
+
+    fetchEvents()
+  }, [])
+
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        setTeamMembersLoading(true)
+        const response = await fetch('/api/team-members')
+        if (!response.ok) {
+          throw new Error('Failed to fetch team members')
+        }
+        const data = await response.json()
+        setTeamMembers(data.teamMembers || [])
+        setTeamMembersError(null)
+      } catch (error) {
+        console.error('Error fetching team members:', error)
+        setTeamMembersError('Failed to load team members')
+        setTeamMembers([])
+      } finally {
+        setTeamMembersLoading(false)
+      }
+    }
+
+    fetchTeamMembers()
+  }, [])
 
   return (
     <div className="min-h-screen bg-white">
@@ -464,50 +540,65 @@ export default function About() {
           </div>
 
           {/* Partners Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-12">
-            {partners.map((partner, idx) => (
-              <div key={idx} className="group relative">
-                <div 
-                  className="relative h-full bg-white rounded-2xl p-6 md:p-8 border-2 transition-all duration-500 shadow-lg hover:shadow-2xl hover:-translate-y-3 overflow-hidden"
-                  style={{ 
-                    borderColor: '#e5e7eb',
-                    background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)'
-                  }}
-                >
+          {partnersLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Loading partners...</p>
+            </div>
+          ) : partnersError ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">{partnersError}</p>
+            </div>
+          ) : partners.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">No partners available at this time.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-12">
+              {partners.map((partner, idx) => (
+                <div key={partner._id || idx} className="group relative">
                   <div 
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity duration-500"
-                    style={{
-                      background: `linear-gradient(135deg, ${foundationGreen}, ${foundationOrange})`
-                    }}
-                  />
-                  
-                  <div 
-                    className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    className="relative h-full bg-white rounded-2xl p-6 md:p-8 border-2 transition-all duration-500 shadow-lg hover:shadow-2xl hover:-translate-y-3 overflow-hidden"
                     style={{ 
-                      background: idx % 2 === 0 
-                        ? `linear-gradient(90deg, ${foundationGreen}, ${foundationBrown})`
-                        : `linear-gradient(90deg, ${foundationOrange}, ${foundationBrown})`
+                      borderColor: '#e5e7eb',
+                      background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)'
                     }}
-                  />
-                  
-                  <div className="flex flex-col items-center justify-center h-full">
-                    <div className="relative w-full h-32 sm:h-36 md:h-40 mb-4">
-                      <Image
-                        src={partner.src}
-                        alt={partner.name}
-                        fill
-                        className="object-contain p-2 transition-transform duration-500 group-hover:scale-110"
-                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                      />
+                  >
+                    <div 
+                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity duration-500"
+                      style={{
+                        background: `linear-gradient(135deg, ${foundationGreen}, ${foundationOrange})`
+                      }}
+                    />
+                    
+                    <div 
+                      className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ 
+                        background: idx % 2 === 0 
+                          ? `linear-gradient(90deg, ${foundationGreen}, ${foundationBrown})`
+                          : `linear-gradient(90deg, ${foundationOrange}, ${foundationBrown})`
+                      }}
+                    />
+                    
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <div className="relative w-full h-32 sm:h-36 md:h-40 mb-4">
+                        <Image
+                          src={partner.logoUrl}
+                          alt={partner.name}
+                          fill
+                          className="object-contain p-2 transition-transform duration-500 group-hover:scale-110"
+                          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                          unoptimized
+                        />
+                      </div>
+                      <h4 className="text-sm md:text-base font-semibold text-gray-800 text-center group-hover:text-gray-900 transition-colors">
+                        {partner.name}
+                      </h4>
                     </div>
-                    <h4 className="text-sm md:text-base font-semibold text-gray-800 text-center group-hover:text-gray-900 transition-colors">
-                      {partner.name}
-                    </h4>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* CTA */}
           <div className="text-center mt-12">
@@ -554,99 +645,147 @@ export default function About() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            {recentEvents.map((event, idx) => (
-              <div key={idx} className="group relative">
-                <div className="relative h-full rounded-2xl overflow-hidden bg-white border-2 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2" style={{ borderColor: '#e5e7eb' }}>
-                  {/* Image */}
-                  <div className="relative w-full h-64 overflow-hidden bg-gray-50">
-                    <div className="absolute inset-0 z-0">
-                      <Image
-                        src={event.image}
-                        alt={event.caption}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover blur-md opacity-90 scale-100"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <div className="absolute inset-0 z-10 flex items-center justify-center">
-                      <Image
-                        src={event.image}
-                        alt={event.caption}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-contain"
-                      />
-                    </div>
-                    {/* Date badge */}
-                    <div className="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm shadow-md">
-                      <span className="text-xs font-semibold" style={{ color: foundationBrown }}>
-                        {event.date}
-                      </span>
+          {eventsLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Loading events...</p>
+            </div>
+          ) : eventsError ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">{eventsError}</p>
+            </div>
+          ) : recentEvents.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">No recent events available at this time.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+              {recentEvents.map((event, idx) => {
+                // Format date for display
+                const eventDate = new Date(event.date)
+                const formattedDate = eventDate.toLocaleDateString('en-US', { 
+                  month: 'long', 
+                  year: 'numeric' 
+                })
+
+                return (
+                  <div
+                    key={event._id || idx}
+                    className="group relative cursor-pointer"
+                    onClick={() => {
+                      setSelectedEvent(event)
+                      setShowModal(true)
+                    }}
+                  >
+                    <div className="relative h-full rounded-2xl overflow-hidden bg-white border-2 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2" style={{ borderColor: '#e5e7eb' }}>
+                      {/* Image */}
+                      <div className="relative w-full h-64 overflow-hidden bg-gray-50">
+                        <div className="absolute inset-0 z-0">
+                          <Image
+                            src={event.imageUrl}
+                            alt={event.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            className="object-cover blur-md opacity-90 scale-100 transition-transform duration-300 group-hover:scale-110"
+                            aria-hidden="true"
+                            unoptimized
+                          />
+                        </div>
+                        <div className="absolute inset-0 z-10 flex items-center justify-center">
+                          <Image
+                            src={event.imageUrl}
+                            alt={event.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            className="object-contain transition-transform duration-300 group-hover:scale-105"
+                            unoptimized
+                          />
+                        </div>
+                        {/* Date badge */}
+                        <div className="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm shadow-md">
+                          <span className="text-xs font-semibold" style={{ color: foundationBrown }}>
+                            {formattedDate}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="p-6">
+                        <h3 className="font-heading text-xl md:text-2xl font-bold mb-2 group-hover:opacity-90 transition-opacity" style={{ color: foundationBrown }}>
+                          {event.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm md:text-base leading-relaxed line-clamp-3">
+                          {event.description}
+                        </p>
+                        <div className="mt-4 flex items-center text-sm font-semibold" style={{ color: foundationGreen }}>
+                          <span className="group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
+                            Read more
+                            <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  
-                  {/* Content */}
-                  <div className="p-6">
-                    <h3 className="font-heading text-xl md:text-2xl font-bold mb-2" style={{ color: foundationBrown }}>
-                      {event.caption}
-                    </h3>
-                    <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                      {event.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                )
+              })}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Meet Our Team Section (Optional) */}
-      {teamMembers.length > 0 && (
-        <section className="py-16 md:py-24 relative overflow-hidden">
-          {/* Background Image */}
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/mainbackground2.png"
-              alt=""
-              fill
-              className="object-cover"
-              sizes="100vw"
-            />
-            {/* Overlay for better readability */}
-            <div className="absolute inset-0 bg-white/70" />
-          </div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center mb-12 md:mb-16">
-              <div className="inline-block mb-4">
-                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
-                  Meet Our Team
-                </h2>
-              </div>
-              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
-                The dedicated individuals who drive our mission forward
-              </p>
+      {/* Meet Our Team Section */}
+      <section className="py-16 md:py-24 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/mainbackground2.png"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          {/* Overlay for better readability */}
+          <div className="absolute inset-0 bg-white/70" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12 md:mb-16">
+            <div className="inline-block mb-4">
+              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
+                Meet Our Team
+              </h2>
             </div>
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
+              The dedicated individuals who drive our mission forward
+            </p>
+          </div>
 
+          {teamMembersLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Loading team members...</p>
+            </div>
+          ) : teamMembersError ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">{teamMembersError}</p>
+            </div>
+          ) : teamMembers.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">No team members available at this time.</p>
+            </div>
+          ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-              {teamMembers.map((member, idx) => (
-                <div key={idx} className="group relative">
+              {teamMembers.map((member) => (
+                <div key={member._id} className="group relative">
                   <div className="relative h-full rounded-2xl p-8 bg-white border-2 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden"
                        style={{ 
                          borderColor: '#e5e7eb',
                          background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)'
                        }}>
-                    {/* Headshot */}
-                    <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 shadow-md" style={{ borderColor: foundationGreen }}>
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover"
-                        sizes="128px"
-                      />
+                    {/* LinkedIn Icon/Placeholder */}
+                    <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 shadow-md flex items-center justify-center" style={{ borderColor: foundationGreen, backgroundColor: '#f3f4f6' }}>
+                      <svg className="w-16 h-16" style={{ color: foundationGreen }} fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
                     </div>
                     
                     {/* Content */}
@@ -657,16 +796,36 @@ export default function About() {
                       <p className="text-sm md:text-base font-semibold mb-4" style={{ color: foundationOrange }}>
                         {member.role}
                       </p>
-                      <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                        {member.bio}
-                      </p>
+                      <a
+                        href={member.linkedinLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-4 py-2 rounded-lg text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                        style={{ backgroundColor: '#0077b5' }}
+                      >
+                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        View LinkedIn
+                      </a>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
+          )}
+        </div>
+      </section>
+
+      {/* Event Detail Modal */}
+      {showModal && selectedEvent && (
+        <EventModal
+          event={selectedEvent}
+          onClose={() => {
+            setShowModal(false)
+            setSelectedEvent(null)
+          }}
+        />
       )}
     </div>
   )
