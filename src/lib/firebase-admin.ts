@@ -8,8 +8,25 @@ let adminStorage: Storage | undefined
 
 if (!getApps().length) {
   try {
-    // Option 1: Use individual service account environment variables (preferred)
-    if (
+    // Option 1: Use service account from environment variable (JSON string)
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+      const rawServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
+      const serviceAccount = rawServiceAccount ? JSON.parse(rawServiceAccount) : null
+      if (!serviceAccount) {
+        throw new Error('FIREBASE_SERVICE_ACCOUNT is set but could not be parsed')
+      }
+      if (serviceAccount.private_key && typeof serviceAccount.private_key === 'string') {
+        serviceAccount.private_key = serviceAccount.private_key.includes('\\n')
+          ? serviceAccount.private_key.replace(/\\n/g, '\n')
+          : serviceAccount.private_key
+      }
+      adminApp = initializeApp({
+        credential: cert(serviceAccount),
+        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      })
+    }
+    // Option 2: Use individual service account environment variables (fallback)
+    else if (
       process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY &&
       process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL &&
       process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID
@@ -32,20 +49,6 @@ if (!getApps().length) {
       }
       adminApp = initializeApp({
         credential: cert(serviceAccount as any),
-        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-      })
-    }
-    // Option 2: Use service account from environment variable (JSON string)
-    else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-      const rawServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
-      const serviceAccount = rawServiceAccount ? JSON.parse(rawServiceAccount) : null
-      if (serviceAccount && serviceAccount.private_key && typeof serviceAccount.private_key === 'string') {
-        serviceAccount.private_key = serviceAccount.private_key.includes('\\n')
-          ? serviceAccount.private_key.replace(/\\n/g, '\n')
-          : serviceAccount.private_key
-      }
-      adminApp = initializeApp({
-        credential: cert(serviceAccount),
         storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
       })
     }
