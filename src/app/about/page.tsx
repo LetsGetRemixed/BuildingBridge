@@ -498,12 +498,7 @@ export default function About() {
                     </p>
                     <div className="flex items-center text-sm font-semibold" 
                          style={{ color: foundationGreen }}>
-                      <span className="group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
-                        Learn more
-                        <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </span>
+                     
                     </div>
                   </div>
                 </div>
