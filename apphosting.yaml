@@ -50,7 +50,8 @@ env:
     secret: FIREBASE_SERVICE_ACCOUNT_CLIENT_X509_CERT_URL
   - variable: FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN
     secret: FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN
-
+  - variable: FIREBASE_SERVICE_ACCOUNT
+    secret: FIREBASE_SERVICE_ACCOUNT
 # Build configuration
 buildConfig:
   buildCommand: npm run build
