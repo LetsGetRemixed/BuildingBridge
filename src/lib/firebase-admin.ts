@@ -14,11 +14,14 @@ if (!getApps().length) {
       process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL &&
       process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID
     ) {
+      const rawPrivateKey = process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY
       const serviceAccount = {
         type: process.env.FIREBASE_SERVICE_ACCOUNT_TYPE || 'service_account',
         project_id: process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
         private_key_id: process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY_ID || '',
-        private_key: process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        private_key: rawPrivateKey?.includes('\\n')
+          ? rawPrivateKey.replace(/\\n/g, '\n')
+          : rawPrivateKey,
         client_email: process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL,
         client_id: process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_ID || '',
         auth_uri: process.env.FIREBASE_SERVICE_ACCOUNT_AUTH_URI || 'https://accounts.google.com/o/oauth2/auth',
@@ -34,7 +37,13 @@ if (!getApps().length) {
     }
     // Option 2: Use service account from environment variable (JSON string)
     else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+      const rawServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
+      const serviceAccount = rawServiceAccount ? JSON.parse(rawServiceAccount) : null
+      if (serviceAccount && serviceAccount.private_key && typeof serviceAccount.private_key === 'string') {
+        serviceAccount.private_key = serviceAccount.private_key.includes('\\n')
+          ? serviceAccount.private_key.replace(/\\n/g, '\n')
+          : serviceAccount.private_key
+      }
       adminApp = initializeApp({
         credential: cert(serviceAccount),
         storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
