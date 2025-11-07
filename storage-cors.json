@@ -1,0 +1,22 @@
+[
+  {
+    "origin": [
+      "http://localhost:3000",
+      "https://buildingbridgefoundation--buildingbridgefoundation-3c04d.us-east4.hosted.app"
+    ],
+    "method": [
+      "GET",
+      "PUT",
+      "HEAD",
+      "DELETE",
+      "OPTIONS"
+    ],
+    "responseHeader": [
+      "Content-Type",
+      "Authorization",
+      "x-goog-meta-*"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]
+

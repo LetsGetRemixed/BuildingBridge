@@ -119,25 +119,66 @@ export default function EventsManagement() {
       throw new Error('No image file selected')
     }
 
-    const token = localStorage.getItem('token')
-    const formData = new FormData()
-    formData.append('file', imageFile)
-
-    const response = await fetch('/api/admin/events/upload', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      body: formData
-    })
-
-    if (!response.ok) {
-      const data = await response.json()
-      throw new Error(data.error || 'Failed to upload image')
+    if (imageFile.size > 5 * 1024 * 1024) {
+      throw new Error('File size must be less than 5MB')
     }
 
-    const data = await response.json()
-    return data.url
+    const token = localStorage.getItem('token')
+    if (!token) {
+      throw new Error('Authentication required')
+    }
+
+    const contentType = imageFile.type || 'application/octet-stream'
+
+    const signedResponse = await fetch('/api/admin/events/upload', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        fileName: imageFile.name,
+        contentType
+      })
+    })
+
+    if (!signedResponse.ok) {
+      const data = await signedResponse.json()
+      throw new Error(data.error || 'Failed to create upload URL')
+    }
+
+    const { uploadUrl, filePath, publicUrl } = await signedResponse.json()
+
+    const uploadHeaders: Record<string, string> = {
+      'Content-Type': contentType
+    }
+
+    const uploadResponse = await fetch(uploadUrl, {
+      method: 'PUT',
+      headers: uploadHeaders,
+      body: imageFile
+    })
+
+    if (!uploadResponse.ok) {
+      throw new Error('Failed to upload image to storage')
+    }
+
+    const commitResponse = await fetch('/api/admin/events/upload/commit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ filePath })
+    })
+
+    if (!commitResponse.ok) {
+      const data = await commitResponse.json()
+      throw new Error(data.error || 'Failed to finalize image upload')
+    }
+
+    const commitData = await commitResponse.json()
+    return commitData.publicUrl || publicUrl
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

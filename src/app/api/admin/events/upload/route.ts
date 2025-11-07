@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/jwt'
 import { findUserByEmail } from '@/lib/user'
-import { adminStorage } from '@/lib/firebase-admin'
+import { adminStorage, getAdminBucket } from '@/lib/firebase-admin'
+import { randomUUID } from 'crypto'
 
-// Server-side file upload to Firebase Storage
+// Request a signed upload URL for Firebase Storage (GCS)
 export async function POST(request: NextRequest) {
   try {
     // Verify admin authentication
@@ -31,59 +32,58 @@ export async function POST(request: NextRequest) {
       }, { status: 500 })
     }
 
-    // Parse FormData
-    const formData = await request.formData()
-    const file = formData.get('file') as File
+    const { contentType, fileName } = await request.json()
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    if (!contentType || typeof contentType !== 'string' || !contentType.startsWith('image/')) {
+      return NextResponse.json({ error: 'Invalid or missing image contentType' }, { status: 400 })
     }
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      return NextResponse.json({ error: 'File must be an image' }, { status: 400 })
+    const safeBaseName = typeof fileName === 'string' && fileName.trim().length > 0
+      ? fileName.trim().toLowerCase().replace(/[^a-z0-9.\-_]/g, '_')
+      : `image_${Date.now()}`
+
+    const allowedExt = new Set(['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'svg'])
+    const extFromName = safeBaseName.includes('.') ? (safeBaseName.split('.').pop() || '').toLowerCase() : ''
+    const extensionMap: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/jpg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+      'image/gif': 'gif',
+      'image/bmp': 'bmp',
+      'image/tiff': 'tiff',
+      'image/svg+xml': 'svg'
     }
+    const typeExt = extensionMap[contentType] || (contentType.split('/').pop() || '').toLowerCase() || 'jpg'
+    const candidateExt = extFromName && allowedExt.has(extFromName) ? extFromName : typeExt
+    const safeExt = allowedExt.has(candidateExt) ? candidateExt : 'jpg'
 
-    // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024 // 5MB
-    if (file.size > maxSize) {
-      return NextResponse.json({ error: 'File size must be less than 5MB' }, { status: 400 })
-    }
+    const uniqueId = `${Date.now()}-${randomUUID()}`
+    const filePath = `events/${uniqueId}.${safeExt}`
 
-    // Convert File to Buffer
-    const arrayBuffer = await file.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
+    const bucket = getAdminBucket()
+    const file = bucket.file(filePath)
 
-    // Generate unique filename
-    const timestamp = Date.now()
-    const fileName = `events/${timestamp}_${file.name}`
-    
-    // Upload to Firebase Storage
-    const bucket = adminStorage.bucket()
-    const fileRef = bucket.file(fileName)
-
-    // Upload file
-    await fileRef.save(buffer, {
-      metadata: {
-        contentType: file.type,
-      },
+    const expires = Date.now() + 15 * 60 * 1000 // 15 minutes
+    const [uploadUrl] = await file.getSignedUrl({
+      version: 'v4',
+      action: 'write',
+      expires,
+      contentType
     })
 
-    // Make file publicly readable
-    await fileRef.makePublic()
-
-    // Get public URL
-    const downloadURL = `https://storage.googleapis.com/${bucket.name}/${fileName}`
+    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${encodeURI(filePath)}`
 
     return NextResponse.json({
-      message: 'File uploaded successfully',
-      url: downloadURL,
-      fileName
+      uploadUrl,
+      filePath,
+      publicUrl,
+      expiresAt: new Date(expires).toISOString()
     })
   } catch (error: any) {
-    console.error('Error uploading file:', error)
+    console.error('Error creating signed upload URL:', error)
     return NextResponse.json({ 
-      error: error.message || 'Internal server error' 
+      error: error.message || 'Failed to create signed upload URL' 
     }, { status: 500 })
   }
 }

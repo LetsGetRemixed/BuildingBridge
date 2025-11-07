@@ -6,6 +6,21 @@ import { join } from 'path'
 let adminApp: App | undefined
 let adminStorage: Storage | undefined
 
+const normalizeStorageBucket = (bucket?: string | null) => {
+  if (!bucket) return undefined
+  const trimmed = bucket.trim()
+  if (!trimmed) return undefined
+  // Allow configurations that include the gs:// scheme.
+  if (trimmed.startsWith('gs://')) {
+    return trimmed.replace('gs://', '').replace(/\/$/, '')
+  }
+  return trimmed.replace(/\/$/, '')
+}
+
+const resolvedStorageBucket = normalizeStorageBucket(
+  process.env.FIREBASE_ADMIN_STORAGE_BUCKET || process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+)
+
 if (!getApps().length) {
   try {
     // Option 1: Use service account from environment variable (JSON string)
@@ -22,7 +37,7 @@ if (!getApps().length) {
       }
       adminApp = initializeApp({
         credential: cert(serviceAccount),
-        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+        storageBucket: resolvedStorageBucket,
       })
     }
     // Option 2: Use individual service account environment variables (fallback)
@@ -49,7 +64,7 @@ if (!getApps().length) {
       }
       adminApp = initializeApp({
         credential: cert(serviceAccount as any),
-        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+        storageBucket: resolvedStorageBucket,
       })
     }
     // Option 3: Use service account file path (for local development fallback)
@@ -63,7 +78,7 @@ if (!getApps().length) {
       const serviceAccount = JSON.parse(readFileSync(resolvedPath, 'utf8'))
       adminApp = initializeApp({
         credential: cert(serviceAccount),
-        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+        storageBucket: resolvedStorageBucket,
       })
     }
     // Option 4: Try to load from default location (serviceAccountKey.json in root)
@@ -73,13 +88,13 @@ if (!getApps().length) {
         const serviceAccount = JSON.parse(readFileSync(defaultPath, 'utf8'))
         adminApp = initializeApp({
           credential: cert(serviceAccount),
-          storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+          storageBucket: resolvedStorageBucket,
         })
       } catch {
         // Option 5: Use Application Default Credentials (for Vercel/Cloud deployment)
         adminApp = initializeApp({
           projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-          storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+          storageBucket: resolvedStorageBucket,
         })
       }
     }
@@ -95,7 +110,7 @@ if (!getApps().length) {
 if (adminApp) {
   try {
     adminStorage = getStorage(adminApp)
-    console.log('Firebase Admin initialized successfully')
+    console.log('Firebase Admin initialized successfully with bucket:', resolvedStorageBucket)
   } catch (error) {
     console.error('Error initializing Firebase Admin Storage:', error)
   }
@@ -103,5 +118,15 @@ if (adminApp) {
   console.warn('Firebase Admin app not initialized')
 }
 
-export { adminApp, adminStorage }
+const getAdminBucket = () => {
+  if (!adminStorage) {
+    throw new Error('Firebase Admin storage is not initialized')
+  }
+
+  return resolvedStorageBucket
+    ? adminStorage.bucket(resolvedStorageBucket)
+    : adminStorage.bucket()
+}
+
+export { adminApp, adminStorage, resolvedStorageBucket, getAdminBucket }
 
