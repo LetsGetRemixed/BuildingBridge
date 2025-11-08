@@ -94,6 +94,15 @@ export async function POST(request: NextRequest) {
       stack: error?.stack,
       responseStatus: error?.response?.status,
       responseData: error?.response?.data,
+      fileNameAttempted: error?.errors?.[0]?.message,
+      bucket: (() => {
+        try {
+          const bucket = getAdminBucket()
+          return bucket.name
+        } catch (err: any) {
+          return `bucket-error: ${err?.message}`
+        }
+      })(),
     })
     return NextResponse.json({ 
       error: error.message || 'Internal server error' 
