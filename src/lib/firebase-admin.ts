@@ -10,11 +10,10 @@ const normalizeStorageBucket = (bucket?: string | null) => {
   if (!bucket) return undefined
   const trimmed = bucket.trim()
   if (!trimmed) return undefined
-  // Allow configurations that include the gs:// scheme.
   if (trimmed.startsWith('gs://')) {
     return trimmed.replace('gs://', '').replace(/\/$/, '')
   }
-  return trimmed.replace(/\/$/, '')
+  return trimmed.replace(/^\//, '').replace(/\/$/, '')
 }
 
 const resolvedStorageBucket = normalizeStorageBucket(
