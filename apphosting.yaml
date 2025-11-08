@@ -52,8 +52,6 @@ env:
     secret: FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN
   - variable: FIREBASE_SERVICE_ACCOUNT
     secret: FIREBASE_SERVICE_ACCOUNT
-  - variable: FIREBASE_ADMIN_STORAGE_BUCKET
-    secret: FIREBASE_ADMIN_STORAGE_BUCKET
 # Build configuration
 buildConfig:
   buildCommand: npm run build
