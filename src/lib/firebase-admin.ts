@@ -10,10 +10,15 @@ const normalizeStorageBucket = (bucket?: string | null) => {
   if (!bucket) return undefined
   const trimmed = bucket.trim()
   if (!trimmed) return undefined
-  if (trimmed.startsWith('gs://')) {
-    return trimmed.replace('gs://', '').replace(/\/$/, '')
+  const cleaned = trimmed
+    .replace(/\\r/g, '')
+    .replace(/\\n/g, '')
+    .replace(/\r/g, '')
+    .replace(/\n/g, '')
+  if (cleaned.startsWith('gs://')) {
+    return cleaned.replace('gs://', '').replace(/\/$/, '')
   }
-  return trimmed.replace(/^\//, '').replace(/\/$/, '')
+  return cleaned.replace(/^\//, '').replace(/\/$/, '')
 }
 
 const resolvedStorageBucket = normalizeStorageBucket(
