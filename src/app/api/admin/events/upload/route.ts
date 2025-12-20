@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       .replace(/[^a-z0-9.\-_]/g, '_')
     const timestamp = Date.now()
     const filePath = `events/${timestamp}_${sanitizedName}`
-
+    
     const bucket = getAdminBucket()
     const fileRef = bucket.file(filePath)
 
