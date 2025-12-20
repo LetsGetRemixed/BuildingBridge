@@ -43,12 +43,12 @@ export default function Navbar() {
               <div className="relative">
                 <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md" style={{ background: foundationGreen }} />
                 <Image
-                  src="/logoicon.png"
+                  src="/bridgeicon.png"
                   alt="Building Bridge logo"
-                  width={40}
+                  width={64}
                   height={40}
                   priority
-                  className="w-8 h-8 md:w-10 md:h-10 relative transition-transform duration-300 group-hover:scale-110"
+                  className="w-16 h-10 relative transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
               <span className="hidden lg:block font-heading text-lg md:text-xl font-bold text-gray-900 group-hover:opacity-90 transition-opacity">

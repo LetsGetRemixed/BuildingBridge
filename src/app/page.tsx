@@ -154,7 +154,7 @@ export default function Home() {
                 </div>
                 
                 <Image
-                  src="/logo2.png"
+                  src="/bridgelogo.png"
                   alt="Building Bridge Foundation"
                   width={800}
                   height={800}
@@ -165,7 +165,7 @@ export default function Home() {
             </div>
           </div>
           <h1 className="font-heading text-white text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-            Building Bridges, Strengthening Communities.
+            Building brighter futures—one community at a time.
           </h1>
           <p className="mt-3 text-white/90 max-w-2xl mx-auto text-sm md:text-base animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
             Empowering families through education, life skills, and community partnerships.

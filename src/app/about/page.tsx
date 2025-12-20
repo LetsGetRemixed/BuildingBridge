@@ -305,8 +305,9 @@ export default function About() {
                   </h3>
                   <div className="h-1 w-16 mb-6 rounded-full transition-all duration-500 group-hover:w-24" style={{ background: foundationGreen }} />
                   <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
-                    To bridge gaps in education, family support, and life skills by partnering
-                    with communities and organizations to build lasting opportunities.
+                    The Building Bridge Foundation supports
+                    organizations who aim to improve our communities and
+                    educate and empower individuals.
                   </p>
                   
                   {/* Decorative bottom accent */}
@@ -413,8 +414,8 @@ export default function About() {
                   </h3>
                   <div className="h-1 w-16 mb-6 rounded-full transition-all duration-500 group-hover:w-24" style={{ background: foundationOrange }} />
                   <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
-                    Strong, thriving neighborhoods where every family has access to the tools
-                    and support they need to succeed.
+                    The Building Bridge Foundation is dedicated to
+                    enriching and preserving our communities.
                   </p>
                   
                   {/* Decorative bottom accent */}
