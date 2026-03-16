@@ -71,3 +71,49 @@ body {
 .animate-fade-in {
   animation: fade-in 0.7s ease-out forwards;
 }
+
+/* Design tokens */
+:root {
+  --foundation-green: #2E7D32;
+  --foundation-brown: #6D4C41;
+  --foundation-orange: #EF6C00;
+}
+
+/* Home page enhancements */
+@keyframes hero-glow {
+  0%, 100% { opacity: 0.4; filter: blur(40px); }
+  50% { opacity: 0.7; filter: blur(60px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes slide-up-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-hero-glow {
+  animation: hero-glow 8s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.animate-slide-up-reveal {
+  animation: slide-up-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

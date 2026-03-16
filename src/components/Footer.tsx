@@ -60,7 +60,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed mb-6">
-              Building bridges, strengthening communities. Empowering families through education, life skills, and community partnerships.
+              Helping People Cross Gaps They Couldn&apos;t Cross Alone
             </p>
            
           </div>
@@ -225,6 +225,7 @@ export default function Footer() {
                 <div>
                   <p className="text-gray-300 text-sm">Location</p>
                   <p className="text-white text-sm">Comal County Office<br />408 South Seguin Avenue<br />New Braunfels, Texas 78130</p>
+                  <p className="text-white text-sm mt-2">Jackson County Office<br />305 N Allen St<br />Edna, TX 77957</p>
                 </div>
               </li>
             </ul>

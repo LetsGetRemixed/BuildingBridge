@@ -174,7 +174,7 @@ export default function About() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/aboutheader.png"
+            src="/images/homeheader.webp"
             alt=""
             fill
             className="object-cover"
@@ -182,7 +182,7 @@ export default function About() {
             sizes="100vw"
           />
           {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/60" />
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -306,8 +306,7 @@ export default function About() {
                   <div className="h-1 w-16 mb-6 rounded-full transition-all duration-500 group-hover:w-24" style={{ background: foundationGreen }} />
                   <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
                     The Building Bridge Foundation supports
-                    organizations who aim to improve our communities and
-                    educate and empower individuals.
+                    organizations that improve our communities through education and empowerment.
                   </p>
                   
                   {/* Decorative bottom accent */}
@@ -463,44 +462,62 @@ export default function About() {
           <div className="text-center mb-12 md:mb-16">
             <h2 className={`font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto transition-all duration-700 ${
               isVisible['pillars-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`} style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>Our Pillars</h2>
+            }`} style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>Our Interest</h2>
             <p className={`text-lg text-gray-600 max-w-2xl mx-auto transition-all duration-700 ${
               isVisible['pillars-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`} style={{ transitionDelay: '0.1s' }}>
-              The foundation of our mission rests on five core pillars that guide everything we do
+              Primarily, we aim to support, promote, and advance organizations focused on the following:
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               { 
-                title: 'Education', 
+                title: 'Education/CTE', 
                 href: '/about/pillars#education', 
                 icon: '/icons/education.png',
                 description: 'Empowering minds through learning opportunities'
               },
               { 
-                title: 'Families', 
+                title: 'After School Care', 
                 href: '/about/pillars#families', 
                 icon: '/icons/family.png',
                 description: 'Strengthening family bonds and support systems'
               },
               { 
-                title: 'Life Skills', 
+                title: 'Living Into Potential', 
                 href: '/about/pillars#lifeskills', 
                 icon: '/icons/life.png',
                 description: 'Building practical skills for everyday success'
               },
               { 
-                title: 'Food/Housing', 
+                title: 'Public Good', 
                 href: '/about/pillars#support', 
                 icon: '/icons/housing.png',
                 description: 'Ensuring basic needs are met with dignity'
               },
               { 
-                title: 'Community', 
+                title: 'Well-being', 
                 href: '/about/pillars#community', 
-                icon: '/icons/community.png',
+                icon: '/icons/wellbeing.png',
                 description: 'Fostering connections and collective growth'
+              },
+              { 
+                title: 'Health', 
+                href: '/about/pillars#health', 
+                icon: '/icons/Health.png',
+                description: 'Supporting physical and mental wellness'
+              },
+              { 
+                title: 'Technology', 
+                href: '/about/pillars#technology', 
+                icon: '/icons/Technology.png',
+                description: 'Bridging the digital divide and building skills'
+              },
+              { 
+                title: 'The Arts', 
+                href: '/about/pillars#arts', 
+                icon: '/icons/arts.png',
+                description: 'Nurturing creativity and cultural expression'
               },
             ].map((p, index) => (
               <Link 
@@ -520,11 +537,13 @@ export default function About() {
                   <div 
                     className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{ 
-                      background: index === 0 ? `linear-gradient(90deg, ${foundationGreen}, ${foundationBrown})` :
-                                  index === 1 ? `linear-gradient(90deg, ${foundationBrown}, ${foundationOrange})` :
-                                  index === 2 ? `linear-gradient(90deg, ${foundationOrange}, ${foundationGreen})` :
-                                  index === 3 ? `linear-gradient(90deg, ${foundationGreen}, ${foundationOrange})` :
-                                  `linear-gradient(90deg, ${foundationBrown}, ${foundationGreen})`
+                      background: `linear-gradient(90deg, ${[
+                        `${foundationGreen}, ${foundationBrown}`,
+                        `${foundationBrown}, ${foundationOrange}`,
+                        `${foundationOrange}, ${foundationGreen}`,
+                        `${foundationGreen}, ${foundationOrange}`,
+                        `${foundationBrown}, ${foundationGreen}`
+                      ][index % 5]})`
                     }}
                   />
                   
@@ -532,11 +551,7 @@ export default function About() {
                   <div className="relative mb-6 flex items-center justify-center">
                     <div className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-300" 
                          style={{ 
-                           background: index === 0 ? foundationGreen :
-                                      index === 1 ? foundationBrown :
-                                      index === 2 ? foundationOrange :
-                                      index === 3 ? foundationGreen :
-                                      foundationBrown
+                           background: [foundationGreen, foundationBrown, foundationOrange, foundationGreen, foundationBrown][index % 5] || foundationBrown
                          }}
                     />
                     <div className="relative p-4 rounded-2xl bg-gradient-to-br from-gray-50 to-white group-hover:scale-110 transition-transform duration-300 shadow-sm">

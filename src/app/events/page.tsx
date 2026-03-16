@@ -70,13 +70,14 @@ export default function EventsPage() {
       })
     }, observerOptions)
 
-    if (eventsSectionRef.current) {
-      observer.observe(eventsSectionRef.current)
+    const section = eventsSectionRef.current
+    if (section) {
+      observer.observe(section)
     }
 
     return () => {
-      if (eventsSectionRef.current) {
-        observer.unobserve(eventsSectionRef.current)
+      if (section) {
+        observer.unobserve(section)
       }
     }
   }, [])
@@ -101,14 +102,14 @@ export default function EventsPage() {
       <section className="relative py-16 md:py-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/aboutheader.png"
+            src="/images/homeheader.webp"
             alt=""
             fill
             className="object-cover"
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/60" />
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

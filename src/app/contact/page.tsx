@@ -54,7 +54,7 @@ export default function Contact() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/contactheader.png"
+            src="/images/homeheader.webp"
             alt=""
             fill
             className="object-cover"
@@ -62,7 +62,7 @@ export default function Contact() {
             sizes="100vw"
           />
           {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/60" />
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
