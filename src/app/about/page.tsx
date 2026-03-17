@@ -174,7 +174,7 @@ export default function About() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/homeheader.webp"
+            src="/images/bridge3.webp"
             alt=""
             fill
             className="object-cover"

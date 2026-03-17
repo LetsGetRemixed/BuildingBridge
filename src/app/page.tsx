@@ -121,15 +121,15 @@ export default function Home() {
       <section
         className="relative min-h-[85vh] flex items-center justify-center overflow-hidden"
         style={{
-          backgroundImage: "url('/images/homeheader.webp')",
+          backgroundImage: "url('/images/bridge5.webp')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
         {/* Layered overlays for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/40" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/30 to-transparent" />
 
         <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto">
           {/* Logo */}

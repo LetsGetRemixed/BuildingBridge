@@ -54,10 +54,12 @@ export default function Contact() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/homeheader.webp"
+            src="/images/bridge5.webp"
             alt=""
             fill
             className="object-cover"
+            //move to slightly below center
+            style={{ objectPosition: 'center 80%' }}
             priority
             sizes="100vw"
           />
