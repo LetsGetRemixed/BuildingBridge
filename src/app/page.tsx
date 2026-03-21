@@ -154,12 +154,12 @@ export default function Home() {
               >
                 <div className="bg-white rounded-[22px] p-5 md:p-8 shadow-inner">
                   <Image
-                    src="/bridgelogo.png"
+                    src="/logo1.png"
                     alt="Building Bridge Foundation"
                     width={800}
                     height={800}
                     priority
-                    className="max-w-[180px] md:max-w-[260px] w-full h-auto relative z-10 transition-transform duration-500 group-hover:scale-[1.02]"
+                    className="max-w-[260px] md:max-w-[320px] w-full h-auto relative z-10 transition-transform duration-500 group-hover:scale-[1.02]"
                   />
                 </div>
               </div>

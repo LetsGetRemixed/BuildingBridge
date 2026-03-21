@@ -48,7 +48,7 @@ export default function Footer() {
             <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
               <div className="relative">
                 <Image
-                  src="/bridgeicon.png"
+                  src="/newlogoicon.png"
                   alt="Building Bridge Foundation logo"
                   width={64}
                   height={64}
