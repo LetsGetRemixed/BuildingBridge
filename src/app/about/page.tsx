@@ -278,20 +278,13 @@ export default function About() {
                         background: `linear-gradient(135deg, ${foundationGreen}15, ${foundationGreen}05)`
                       }}
                     >
-                      <svg 
-                        className="w-12 h-12 transition-colors duration-500" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        style={{ color: foundationGreen }}
-                      >
-                        <path 
-                          d="M12 2L15 9H22L17 13L19 20L12 16L5 20L7 13L2 9H9L12 2Z" 
-                          stroke="currentColor" 
-                          strokeWidth="2" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <Image
+                        src="/icons/mission.png"
+                        alt=""
+                        width={48}
+                        height={48}
+                        className="object-contain w-12 h-12"
+                      />
                     </div>
                   </div>
                 </div>
@@ -308,23 +301,6 @@ export default function About() {
                     The Building Bridge Foundation supports
                     organizations that improve our communities through education and empowerment.
                   </p>
-                  
-                  {/* Decorative bottom accent */}
-                  <div className="flex items-center gap-2 mt-6 pt-6 border-t border-gray-100">
-                    <div className="flex gap-1">
-                      {[1, 2, 3].map((i) => (
-                        <div 
-                          key={i}
-                          className="w-2 h-2 rounded-full transition-all duration-300 group-hover:scale-125"
-                          style={{ 
-                            background: foundationGreen,
-                            opacity: 0.3 + (i * 0.2)
-                          }}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm font-medium text-gray-500 ml-2">Building bridges together</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -377,29 +353,13 @@ export default function About() {
                         background: `linear-gradient(135deg, ${foundationOrange}15, ${foundationOrange}05)`
                       }}
                     >
-                      <svg 
-                        className="w-12 h-12 transition-colors duration-500" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        style={{ color: foundationOrange }}
-                      >
-                        <circle 
-                          cx="12" 
-                          cy="12" 
-                          r="10" 
-                          stroke="currentColor" 
-                          strokeWidth="2" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round"
-                        />
-                        <path 
-                          d="M12 6V12L16 14" 
-                          stroke="currentColor" 
-                          strokeWidth="2" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <Image
+                        src="/icons/Vision.png"
+                        alt=""
+                        width={48}
+                        height={48}
+                        className="object-contain w-12 h-12"
+                      />
                     </div>
                   </div>
                 </div>
@@ -416,23 +376,6 @@ export default function About() {
                     The Building Bridge Foundation is dedicated to
                     enriching and preserving our communities.
                   </p>
-                  
-                  {/* Decorative bottom accent */}
-                  <div className="flex items-center gap-2 mt-6 pt-6 border-t border-gray-100">
-                    <div className="flex gap-1">
-                      {[1, 2, 3].map((i) => (
-                        <div 
-                          key={i}
-                          className="w-2 h-2 rounded-full transition-all duration-300 group-hover:scale-125"
-                          style={{ 
-                            background: foundationOrange,
-                            opacity: 0.3 + (i * 0.2)
-                          }}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm font-medium text-gray-500 ml-2">Envisioning tomorrow</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -707,13 +650,23 @@ export default function About() {
               <p className="text-gray-600 mb-6 max-w-xl mx-auto">
                 Join us in building stronger communities. Together, we can create lasting impact and meaningful change.
               </p>
-              <Link
-                href="/contact"
-                className="inline-block px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                style={{ backgroundColor: foundationGreen }}
+              <div
+                className="inline-block rounded-2xl"
+                style={{
+                  background: `linear-gradient(135deg, ${foundationGreen} 0%, #1B5E20 50%, ${foundationGreen} 100%)`,
+                  backgroundSize: '200% 200%',
+                }}
               >
-                Get in Touch
-              </Link>
+                <a
+                  href="mailto:info@buildingbridgefoundation.org"
+                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg text-white border-2 border-white/90 hover:border-white bg-white/15 backdrop-blur-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:bg-white/25"
+                >
+                  Get in Touch
+                  <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </div>

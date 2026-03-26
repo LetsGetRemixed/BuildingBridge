@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -9,29 +9,10 @@ const foundationBrown = '#6D4C41'
 const foundationOrange = '#EF6C00'
 
 export default function Navbar() {
-  const [aboutOpen, setAboutOpen] = useState(false)
-  const [aboutMobileOpen, setAboutMobileOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const aboutRef = useRef<HTMLDivElement | null>(null)
-  const aboutMobileRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => {
-    function onClickOutside(e: MouseEvent) {
-      if (aboutRef.current && !aboutRef.current.contains(e.target as Node)) {
-        setAboutOpen(false)
-      }
-      if (aboutMobileRef.current && !aboutMobileRef.current.contains(e.target as Node)) {
-        setAboutMobileOpen(false)
-      }
-    }
-    window.addEventListener('click', onClickOutside)
-    return () => window.removeEventListener('click', onClickOutside)
-  }, [])
-
-  // Close mobile menu when clicking a link
   const closeMobileMenu = () => {
     setMobileOpen(false)
-    setAboutMobileOpen(false)
   }
 
   return (
@@ -68,68 +49,13 @@ export default function Navbar() {
               <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 group-hover:h-1 opacity-0 group-hover:opacity-100" style={{ background: foundationGreen }} />
             </Link>
 
-            <div className="relative" ref={aboutRef}>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setAboutOpen((v) => !v)
-                }}
-                className="font-heading text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 px-3 lg:px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-50 inline-flex items-center relative group"
-                aria-haspopup="true"
-                aria-expanded={aboutOpen}
-              >
-                <span className="relative z-10">About</span>
-                <svg 
-                  className={`ml-1 h-4 w-4 transition-transform duration-300 ${aboutOpen ? 'rotate-180' : ''}`} 
-                  viewBox="0 0 20 20" 
-                  fill="currentColor" 
-                  aria-hidden="true"
-                >
-                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-                </svg>
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 group-hover:h-1 opacity-0 group-hover:opacity-100" style={{ background: foundationGreen }} />
-              </button>
-
-              {aboutOpen && (
-                <div className="absolute left-0 mt-2 w-56 rounded-xl shadow-xl bg-white ring-1 ring-gray-200/50 z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="py-2">
-                    <Link 
-                      href="/about" 
-                      className="block px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 relative group"
-                      onClick={() => setAboutOpen(false)}
-                    >
-                      <span className="relative z-10">About Us</span>
-                      <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={{ background: foundationGreen }} />
-                    </Link>
-                    <Link 
-                      href="/about#pillars" 
-                      className="block px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 relative group"
-                      onClick={() => setAboutOpen(false)}
-                    >
-                      <span className="relative z-10">Our Pillars</span>
-                      <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={{ background: foundationGreen }} />
-                    </Link>
-                    <Link 
-                      href="/about#partnerships" 
-                      className="block px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 relative group"
-                      onClick={() => setAboutOpen(false)}
-                    >
-                      <span className="relative z-10">Partnerships</span>
-                      <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={{ background: foundationOrange }} />
-                    </Link>
-                    <Link 
-                      href="/about#events" 
-                      className="block px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors duration-200 relative group"
-                      onClick={() => setAboutOpen(false)}
-                    >
-                      <span className="relative z-10">Recent Events</span>
-                      <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={{ background: foundationBrown }} />
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Link
+              href="/about"
+              className="font-heading text-sm lg:text-base font-medium text-gray-700 hover:text-gray-900 px-3 lg:px-4 py-2 rounded-lg transition-all duration-300 hover:bg-gray-50 relative group"
+            >
+              <span className="relative z-10">About Us</span>
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 group-hover:h-1 opacity-0 group-hover:opacity-100" style={{ background: foundationGreen }} />
+            </Link>
 
             <Link 
               href="/events" 
@@ -181,61 +107,14 @@ export default function Navbar() {
               Home
             </Link>
             
-            <div className="px-4" ref={aboutMobileRef}>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setAboutMobileOpen((v) => !v)
-                }}
-                className="font-heading w-full text-left py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg inline-flex items-center justify-between transition-colors duration-200"
-                aria-haspopup="true"
-                aria-expanded={aboutMobileOpen}
-              >
-                <span>About</span>
-                <svg 
-                  className={`ml-2 h-5 w-5 transition-transform duration-300 ${aboutMobileOpen ? 'rotate-180' : ''}`} 
-                  viewBox="0 0 20 20" 
-                  fill="currentColor" 
-                  aria-hidden="true"
-                >
-                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-                </svg>
-              </button>
-              {aboutMobileOpen && (
-                <div className="mt-1 ml-4 space-y-1 border-l-2 border-gray-200 pl-4 animate-in slide-in-from-left duration-200">
-                  <Link 
-                    href="/about" 
-                    className="font-heading block px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-                    onClick={closeMobileMenu}
-                  >
-                    About Us
-                  </Link>
-                  <Link 
-                    href="/about#pillars" 
-                    className="font-heading block px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-                    onClick={closeMobileMenu}
-                  >
-                    Our Pillars
-                  </Link>
-                  <Link 
-                    href="/about#partnerships" 
-                    className="font-heading block px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-                    onClick={closeMobileMenu}
-                  >
-                    Partnerships
-                  </Link>
-                  <Link 
-                    href="/about#events" 
-                    className="font-heading block px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-                    onClick={closeMobileMenu}
-                  >
-                    Recent Events
-                  </Link>
-                </div>
-              )}
-            </div>
-            
+            <Link
+              href="/about"
+              className="font-heading block px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+              onClick={closeMobileMenu}
+            >
+              About Us
+            </Link>
+
             <Link 
               href="/events" 
               className="font-heading block px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200"

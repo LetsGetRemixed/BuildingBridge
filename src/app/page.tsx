@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import EventModal from '@/components/EventModal'
 
@@ -122,14 +121,14 @@ export default function Home() {
         className="relative min-h-[85vh] flex items-center justify-center overflow-hidden"
         style={{
           backgroundImage: "url('/images/bridge5.webp')",
-          backgroundSize: 'cover',
+          backgroundSize: '120% 120%',
           backgroundPosition: 'center',
         }}
       >
         {/* Layered overlays for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/10 to-black/0" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_0%,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent" />
 
         <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto">
           {/* Logo */}
@@ -205,14 +204,7 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-14 md:mb-20">
-            <p
-              className={`font-main text-sm uppercase tracking-[0.2em] mb-3 transition-all duration-700 ${
-                isVisible['info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-              }`}
-              style={{ color: foundationGreen }}
-            >
-              Our mission
-            </p>
+           
             <h2
               className={`font-heading text-4xl md:text-5xl lg:text-6xl font-bold max-w-4xl mx-auto leading-tight transition-all duration-700 ${
                 isVisible['info-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -235,25 +227,19 @@ export default function Home() {
                 title: 'Preserving Dignity',
                 body: 'We support organizations that assist people to help themselves while nurturing and preserving their self-respect.',
                 color: foundationGreen,
-                icon: (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                ),
+                iconSrc: '/icons/dignity.png',
               },
               {
                 title: 'Strengthening Communities',
                 body: 'We encourage endeavors that strengthen families and communities, with focus on self-sufficiency and community development.',
                 color: foundationOrange,
-                icon: (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                ),
+                iconSrc: '/icons/community.png',
               },
               {
                 title: 'Serving All',
                 body: 'Our programs focus on the economically disadvantaged, children and youth, seniors, and the disabled throughout Texas.',
                 color: foundationBrown,
-                icon: (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                ),
+                iconSrc: '/icons/serving.png',
               },
             ].map((card, i) => (
               <div
@@ -279,9 +265,13 @@ export default function Home() {
                         boxShadow: `0 8px 24px -4px ${card.color}30`,
                       }}
                     >
-                      <svg className="h-12 w-12" style={{ color: card.color }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        {card.icon}
-                      </svg>
+                      <Image
+                        src={card.iconSrc}
+                        alt=""
+                        width={56}
+                        height={56}
+                        className="object-contain h-14 w-14"
+                      />
                     </div>
                     <h3 className="font-heading text-2xl md:text-3xl font-bold mb-4" style={{ color: foundationBrown }}>
                       {card.title}
@@ -473,15 +463,15 @@ export default function Home() {
               </p>
             </div>
             <div className="flex-shrink-0 flex justify-center md:justify-end">
-              <Link
-                href="/contact"
+              <a
+                href="mailto:info@buildingbridgefoundation.org"
                 className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg text-white border-2 border-white/90 hover:border-white bg-white/15 backdrop-blur-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:bg-white/25"
               >
                 Get in Touch
                 <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </Link>
+              </a>
             </div>
           </div>
         </div>
