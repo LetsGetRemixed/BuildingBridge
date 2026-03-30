@@ -230,6 +230,12 @@ export default function About() {
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
               The principles that guide our work and shape our impact in the community
             </p>
+            <p
+              className="font-heading text-xl md:text-2xl font-semibold mt-6 max-w-2xl mx-auto text-center"
+              style={{ color: foundationBrown }}
+            >
+              Our Vision and Our Mission
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
@@ -263,41 +269,15 @@ export default function About() {
                     background: `linear-gradient(90deg, ${foundationGreen}, ${foundationBrown})`
                   }}
                 />
-                <div className="relative mb-6">
-                  <div className="relative inline-flex items-center justify-center">
-                    <div 
-                      className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-500 blur-xl"
-                      style={{ 
-                        background: foundationGreen,
-                        transform: 'scale(1.5)'
-                      }}
-                    />
-                    <div 
-                      className="relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
-                      style={{ 
-                        background: `linear-gradient(135deg, ${foundationGreen}15, ${foundationGreen}05)`
-                      }}
-                    >
-                      <Image
-                        src="/icons/mission.png"
-                        alt=""
-                        width={48}
-                        height={48}
-                        className="object-contain w-12 h-12"
-                      />
-                    </div>
-                  </div>
-                </div>
-                {/* Content */}
-                <div className="relative z-10">
-                  <h3 
+                <div className="relative z-10 pt-2">
+                  <h3
                     className="text-3xl md:text-4xl font-heading font-bold mb-4 transition-colors duration-300"
                     style={{ color: foundationBrown }}
                   >
                     Our Mission
                   </h3>
                   <div className="h-1 w-16 mb-6 rounded-full transition-all duration-500 group-hover:w-24" style={{ background: foundationGreen }} />
-                  <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
+                  <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
                     The Building Bridge Foundation supports
                     organizations that improve our communities through education and empowerment.
                   </p>
@@ -335,44 +315,15 @@ export default function About() {
                     background: `linear-gradient(90deg, ${foundationOrange}, ${foundationBrown})`
                   }}
                 />
-                {/* Icon Container */}
-                <div className="relative mb-6">
-                  <div className="relative inline-flex items-center justify-center">
-                    {/* Glowing background circle */}
-                    <div 
-                      className="absolute inset-0 rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-500 blur-xl"
-                      style={{ 
-                        background: foundationOrange,
-                        transform: 'scale(1.5)'
-                      }}
-                    />
-                    {/* Icon container */}
-                    <div 
-                      className="relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
-                      style={{ 
-                        background: `linear-gradient(135deg, ${foundationOrange}15, ${foundationOrange}05)`
-                      }}
-                    >
-                      <Image
-                        src="/icons/Vision.png"
-                        alt=""
-                        width={48}
-                        height={48}
-                        className="object-contain w-12 h-12"
-                      />
-                    </div>
-                  </div>
-                </div>
-                {/* Content */}
-                <div className="relative z-10">
-                  <h3 
+                <div className="relative z-10 pt-2">
+                  <h3
                     className="text-3xl md:text-4xl font-heading font-bold mb-4 transition-colors duration-300"
                     style={{ color: foundationBrown }}
                   >
                     Our Vision
                   </h3>
                   <div className="h-1 w-16 mb-6 rounded-full transition-all duration-500 group-hover:w-24" style={{ background: foundationOrange }} />
-                  <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
+                  <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
                     The Building Bridge Foundation is dedicated to
                     enriching and preserving our communities.
                   </p>
@@ -418,49 +369,41 @@ export default function About() {
                 title: 'Education/CTE', 
                 href: '/about/pillars#education', 
                 icon: '/icons/education.png',
-                description: 'Empowering minds through learning opportunities'
               },
               { 
                 title: 'After School Care', 
                 href: '/about/pillars#families', 
                 icon: '/icons/family.png',
-                description: 'Strengthening family bonds and support systems'
               },
               { 
                 title: 'Living Into Potential', 
                 href: '/about/pillars#lifeskills', 
                 icon: '/icons/life.png',
-                description: 'Building practical skills for everyday success'
               },
               { 
                 title: 'Public Good', 
                 href: '/about/pillars#support', 
                 icon: '/icons/housing.png',
-                description: 'Ensuring basic needs are met with dignity'
               },
               { 
                 title: 'Well-being', 
                 href: '/about/pillars#community', 
                 icon: '/icons/wellbeing.png',
-                description: 'Fostering connections and collective growth'
               },
               { 
                 title: 'Health', 
                 href: '/about/pillars#health', 
                 icon: '/icons/Health.png',
-                description: 'Supporting physical and mental wellness'
               },
               { 
                 title: 'Technology', 
                 href: '/about/pillars#technology', 
                 icon: '/icons/Technology.png',
-                description: 'Bridging the digital divide and building skills'
               },
               { 
                 title: 'The Arts', 
                 href: '/about/pillars#arts', 
                 icon: '/icons/arts.png',
-                description: 'Nurturing creativity and cultural expression'
               },
             ].map((p, index) => (
               <Link 
@@ -510,7 +453,7 @@ export default function About() {
                   
                   {/* Content */}
                   <div className="relative z-10">
-                    <h3 className={`font-heading font-bold mb-3 text-gray-900 group-hover:text-gray-800 transition-colors break-words ${
+                    <h3 className={`font-heading font-bold text-gray-900 group-hover:text-gray-800 transition-colors break-words ${
                       p.title === 'Food/Housing' 
                         ? 'text-base sm:text-lg md:text-xl lg:text-xl leading-tight' 
                         : 'text-xl md:text-xl'
@@ -523,13 +466,6 @@ export default function About() {
                         p.title
                       )}
                     </h3>
-                    <p className="text-sm md:text-base text-gray-600 mb-4 leading-relaxed">
-                      {p.description}
-                    </p>
-                    <div className="flex items-center text-sm font-semibold" 
-                         style={{ color: foundationGreen }}>
-                     
-                    </div>
                   </div>
                 </div>
               </Link>

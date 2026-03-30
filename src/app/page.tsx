@@ -227,19 +227,16 @@ export default function Home() {
                 title: 'Preserving Dignity',
                 body: 'We support organizations that assist people to help themselves while nurturing and preserving their self-respect.',
                 color: foundationGreen,
-                iconSrc: '/icons/dignity.png',
               },
               {
                 title: 'Strengthening Communities',
                 body: 'We encourage endeavors that strengthen families and communities, with focus on self-sufficiency and community development.',
                 color: foundationOrange,
-                iconSrc: '/icons/community.png',
               },
               {
                 title: 'Serving All',
                 body: 'Our programs focus on the economically disadvantaged, children and youth, seniors, and the disabled throughout Texas.',
                 color: foundationBrown,
-                iconSrc: '/icons/serving.png',
               },
             ].map((card, i) => (
               <div
@@ -257,25 +254,14 @@ export default function Home() {
                     className="absolute top-0 left-0 right-0 h-1.5 rounded-t-3xl transition-opacity duration-300"
                     style={{ backgroundColor: card.color }}
                   />
-                  <div className="relative flex flex-col items-center text-center">
-                    <div
-                      className="mb-6 flex h-24 w-24 items-center justify-center rounded-2xl transition-all duration-300 group-hover:scale-105"
-                      style={{
-                        background: `linear-gradient(145deg, ${card.color}18, ${card.color}08)`,
-                        boxShadow: `0 8px 24px -4px ${card.color}30`,
-                      }}
-                    >
-                      <Image
-                        src={card.iconSrc}
-                        alt=""
-                        width={56}
-                        height={56}
-                        className="object-contain h-14 w-14"
-                      />
-                    </div>
-                    <h3 className="font-heading text-2xl md:text-3xl font-bold mb-4" style={{ color: foundationBrown }}>
+                  <div className="relative flex flex-col items-center text-center pt-2">
+                    <h3 className="font-heading text-2xl md:text-3xl font-bold mb-5" style={{ color: foundationBrown }}>
                       {card.title}
                     </h3>
+                    <div
+                      className="h-1 w-12 rounded-full mb-5"
+                      style={{ backgroundColor: card.color }}
+                    />
                     <p className="text-gray-600 leading-relaxed text-[15px] md:text-base">
                       {card.body}
                     </p>
