@@ -120,9 +120,9 @@ export default function Home() {
       <section
         className="relative min-h-[85vh] flex items-center justify-center overflow-hidden"
         style={{
-          backgroundImage: "url('/images/bridge5.webp')",
+          backgroundImage: "url('/images/bridge3.webp')",
           backgroundSize: '120% 120%',
-          backgroundPosition: 'center',
+          backgroundPosition: '20% center',
         }}
       >
         {/* Layered overlays for depth */}
@@ -169,17 +169,8 @@ export default function Home() {
             className="font-heading text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] opacity-0 animate-fade-in-up"
             style={{ animationDelay: '0.35s', animationFillMode: 'forwards' }}
           >
-            Building brighter futures—one community at a time.
+            Helping People Cross Gaps They Couldn&apos;t Cross Alone
           </h1>
-          <div
-            className="mt-6 flex flex-col items-center gap-4 opacity-0 animate-fade-in-up"
-            style={{ animationDelay: '0.55s', animationFillMode: 'forwards' }}
-          >
-            <div className="h-px w-16 rounded-full bg-white/60" aria-hidden="true" />
-            <p className="text-white/95 text-base md:text-lg max-w-xl mx-auto font-medium tracking-wide">
-              Helping People Cross Gaps They Couldn&apos;t Cross Alone
-            </p>
-          </div>
         </div>
       </section>
 
@@ -224,17 +215,17 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6 lg:gap-10">
             {[
               {
-                title: 'Preserving Dignity',
-                body: 'We support organizations that assist people to help themselves while nurturing and preserving their self-respect.',
-                color: foundationGreen,
-              },
-              {
                 title: 'Strengthening Communities',
                 body: 'We encourage endeavors that strengthen families and communities, with focus on self-sufficiency and community development.',
                 color: foundationOrange,
               },
               {
-                title: 'Serving All',
+                title: 'Preserving Dignity',
+                body: 'We support organizations that assist people to help themselves while nurturing and preserving their self-respect.',
+                color: foundationGreen,
+              },
+              {
+                title: 'Serving Others',
                 body: 'Our programs focus on the economically disadvantaged, children and youth, seniors, and the disabled throughout Texas.',
                 color: foundationBrown,
               },

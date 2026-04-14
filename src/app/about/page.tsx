@@ -29,15 +29,6 @@ interface Event {
   updatedAt?: Date
 }
 
-interface TeamMember {
-  _id?: string
-  name: string
-  role: string
-  linkedinLink: string
-  createdAt?: Date
-  updatedAt?: Date
-}
-
 export default function About() {
   const [partners, setPartners] = useState<Partner[]>([])
   const [partnersLoading, setPartnersLoading] = useState(true)
@@ -49,16 +40,11 @@ export default function About() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showModal, setShowModal] = useState(false)
 
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([])
-  const [teamMembersLoading, setTeamMembersLoading] = useState(true)
-  const [teamMembersError, setTeamMembersError] = useState<string | null>(null)
-
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({})
   const missionSectionRef = useRef<HTMLElement>(null)
   const pillarsSectionRef = useRef<HTMLElement>(null)
   const partnersSectionRef = useRef<HTMLElement>(null)
   const eventsSectionRef = useRef<HTMLElement>(null)
-  const teamSectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -107,29 +93,6 @@ export default function About() {
     fetchEvents()
   }, [])
 
-  useEffect(() => {
-    const fetchTeamMembers = async () => {
-      try {
-        setTeamMembersLoading(true)
-        const response = await fetch('/api/team-members')
-        if (!response.ok) {
-          throw new Error('Failed to fetch team members')
-        }
-        const data = await response.json()
-        setTeamMembers(data.teamMembers || [])
-        setTeamMembersError(null)
-      } catch (error) {
-        console.error('Error fetching team members:', error)
-        setTeamMembersError('Failed to load team members')
-        setTeamMembers([])
-      } finally {
-        setTeamMembersLoading(false)
-      }
-    }
-
-    fetchTeamMembers()
-  }, [])
-
   // Intersection Observer for scroll animations
   useEffect(() => {
     const observerOptions = {
@@ -152,8 +115,7 @@ export default function About() {
       missionSectionRef.current,
       pillarsSectionRef.current,
       partnersSectionRef.current,
-      eventsSectionRef.current,
-      teamSectionRef.current
+      eventsSectionRef.current
     ].filter(Boolean) as Element[]
 
     sections.forEach((section) => {
@@ -174,15 +136,15 @@ export default function About() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/bridge3.webp"
+            src="/images/bridge5.webp"
             alt=""
             fill
-            className="object-cover"
+            className="object-cover object-[center_68%]"
             priority
             sizes="100vw"
           />
-          {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/60" />
+          {/* Light overlay for text readability while keeping the photo bright */}
+          <div className="absolute inset-0 bg-black/35" />
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -193,7 +155,7 @@ export default function About() {
               </h1>
             </div>
             <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mt-6 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-              Building bridges, strengthening communities. Learn about our mission, values, and the people driving change.
+              Learn about our mission, values, and the people driving change.
             </p>
           </div>
         </div>
@@ -229,12 +191,6 @@ export default function About() {
             </div>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6">
               The principles that guide our work and shape our impact in the community
-            </p>
-            <p
-              className="font-heading text-xl md:text-2xl font-semibold mt-6 max-w-2xl mx-auto text-center"
-              style={{ color: foundationBrown }}
-            >
-              Our Vision and Our Mission
             </p>
           </div>
 
@@ -729,105 +685,6 @@ export default function About() {
                   </div>
                 )
               })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Meet Our Team Section */}
-      <section 
-        ref={teamSectionRef}
-        id="team-section"
-        className={`py-16 md:py-24 relative overflow-hidden transition-all duration-1000 ${
-          isVisible['team-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
-      >
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/mainbackground2.png"
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          {/* Overlay for better readability */}
-          <div className="absolute inset-0 bg-white/70" />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-12 md:mb-16">
-            <div className={`inline-block mb-4 transition-all duration-700 ${
-              isVisible['team-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}>
-              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4 pb-3 w-fit mx-auto" style={{ color: foundationBrown, borderBottom: `3px solid ${foundationGreen}` }}>
-                Meet Our Team
-              </h2>
-            </div>
-            <p className={`text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mt-6 transition-all duration-700 ${
-              isVisible['team-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`} style={{ transitionDelay: '0.1s' }}>
-              The dedicated individuals who drive our mission forward
-            </p>
-          </div>
-
-          {teamMembersLoading ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600">Loading team members...</p>
-            </div>
-          ) : teamMembersError ? (
-            <div className="text-center py-12">
-              <p className="text-red-600">{teamMembersError}</p>
-            </div>
-          ) : teamMembers.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600">No team members available at this time.</p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-              {teamMembers.map((member, idx) => (
-                <div 
-                  key={member._id} 
-                  className={`group relative transition-all duration-700 ${
-                    isVisible['team-section'] ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
-                  }`}
-                  style={{ transitionDelay: `${0.2 + (idx * 0.1)}s` }}
-                >
-                  <div className="relative h-full rounded-2xl p-8 bg-white border-2 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden"
-                       style={{ 
-                         borderColor: '#e5e7eb',
-                         background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)'
-                       }}>
-                    {/* LinkedIn Icon/Placeholder */}
-                    <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 shadow-md flex items-center justify-center" style={{ borderColor: foundationGreen, backgroundColor: '#f3f4f6' }}>
-                      <svg className="w-16 h-16" style={{ color: foundationGreen }} fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="font-heading text-xl md:text-2xl font-bold mb-2" style={{ color: foundationBrown }}>
-                        {member.name}
-                      </h3>
-                      <p className="text-sm md:text-base font-semibold mb-4" style={{ color: foundationOrange }}>
-                        {member.role}
-                      </p>
-                      <a
-                        href={member.linkedinLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 rounded-lg text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                        style={{ backgroundColor: '#0077b5' }}
-                      >
-                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                        View LinkedIn
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
           )}
         </div>

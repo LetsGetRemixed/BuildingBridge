@@ -57,18 +57,16 @@ export default function Contact() {
             src="/images/bridge5.webp"
             alt=""
             fill
-            className="object-cover"
-            //move to slightly below center
-            style={{ objectPosition: 'center 80%' }}
+            className="object-cover object-[center_68%]"
             priority
             sizes="100vw"
           />
-          {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/60" />
+          {/* Light overlay for text readability while keeping the photo bright */}
+          <div className="absolute inset-0 bg-black/35" />
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 md:mb-16">
+          <div className="text-center mb-12">
             <div className="inline-block mb-4 animate-fade-in-up">
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white border-b-2 border-white w-fit mx-auto pb-3" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
                 Get in touch with us
