@@ -84,11 +84,11 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/about/pillars" 
+                  href="/about#pillars-section"
                   className="text-gray-300 hover:text-white transition-colors duration-300 inline-flex items-center group text-sm"
                 >
                   <span className="group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
-                    Our Pillars
+                    Our Interests
                     <svg className="ml-2 h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -97,7 +97,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/programs" 
+                  href="/events"
                   className="text-gray-300 hover:text-white transition-colors duration-300 inline-flex items-center group text-sm"
                 >
                   <span className="group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
@@ -110,7 +110,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/get-involved" 
+                  href="/contact"
                   className="text-gray-300 hover:text-white transition-colors duration-300 inline-flex items-center group text-sm"
                 >
                   <span className="group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
@@ -130,7 +130,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link 
-                  href="/about/partnerships" 
+                  href="/about#partners-section"
                   className="text-gray-300 hover:text-white transition-colors duration-300 inline-flex items-center group text-sm"
                 >
                   <span className="group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">
@@ -143,7 +143,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/about/events" 
+                  href="/events"
                   className="text-gray-300 hover:text-white transition-colors duration-300 inline-flex items-center group text-sm"
                 >
                   <span className="group-hover:translate-x-1 transition-transform duration-300 inline-flex items-center">

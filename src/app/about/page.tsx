@@ -321,45 +321,25 @@ export default function About() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
-              { 
-                title: 'Education/CTE', 
-                href: '/about/pillars#education', 
+              {
+                title: 'Education',
+                href: '/about/pillars#education',
                 icon: '/icons/education.png',
               },
-              { 
-                title: 'After School Care', 
-                href: '/about/pillars#families', 
-                icon: '/icons/family.png',
-              },
-              { 
-                title: 'Living Into Potential', 
-                href: '/about/pillars#lifeskills', 
-                icon: '/icons/life.png',
-              },
-              { 
-                title: 'Public Good', 
-                href: '/about/pillars#support', 
+              {
+                title: 'Food Insecurity and Basic Needs',
+                href: '/about/pillars#support',
                 icon: '/icons/housing.png',
               },
-              { 
-                title: 'Well-being', 
-                href: '/about/pillars#community', 
-                icon: '/icons/wellbeing.png',
+              {
+                title: 'Supporting Communities',
+                href: '/about/pillars#community',
+                icon: '/icons/community.png',
               },
-              { 
-                title: 'Health', 
-                href: '/about/pillars#health', 
-                icon: '/icons/Health.png',
-              },
-              { 
-                title: 'Technology', 
-                href: '/about/pillars#technology', 
-                icon: '/icons/Technology.png',
-              },
-              { 
-                title: 'The Arts', 
-                href: '/about/pillars#arts', 
-                icon: '/icons/arts.png',
+              {
+                title: 'Life Skills',
+                href: '/about/pillars#lifeskills',
+                icon: '/icons/life.png',
               },
             ].map((p, index) => (
               <Link 
@@ -409,18 +389,8 @@ export default function About() {
                   
                   {/* Content */}
                   <div className="relative z-10">
-                    <h3 className={`font-heading font-bold text-gray-900 group-hover:text-gray-800 transition-colors break-words ${
-                      p.title === 'Food/Housing' 
-                        ? 'text-base sm:text-lg md:text-xl lg:text-xl leading-tight' 
-                        : 'text-xl md:text-xl'
-                    }`}>
-                      {p.title === 'Food/Housing' ? (
-                        <>
-                          Food/<wbr />Housing
-                        </>
-                      ) : (
-                        p.title
-                      )}
+                    <h3 className="font-heading font-bold text-gray-900 group-hover:text-gray-800 transition-colors break-words text-lg sm:text-xl md:text-xl leading-snug">
+                      {p.title}
                     </h3>
                   </div>
                 </div>

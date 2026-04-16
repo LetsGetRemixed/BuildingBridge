@@ -36,7 +36,6 @@ export default function Home() {
   
   const infoSectionRef = useRef<HTMLElement>(null)
   const sliderSectionRef = useRef<HTMLElement>(null)
-  const ctaSectionRef = useRef<HTMLElement>(null)
 
   // Convert events to slides format
   const slides: Slide[] = events.map(event => ({
@@ -99,8 +98,7 @@ export default function Home() {
 
     const sections = [
       infoSectionRef.current,
-      sliderSectionRef.current,
-      ctaSectionRef.current
+      sliderSectionRef.current
     ].filter(Boolean) as Element[]
 
     sections.forEach((section) => {
@@ -247,7 +245,15 @@ export default function Home() {
                   />
                   <div className="relative flex flex-col items-center text-center pt-2">
                     <h3 className="font-heading text-2xl md:text-3xl font-bold mb-5" style={{ color: foundationBrown }}>
-                      {card.title}
+                      {card.title === 'Serving Others' ? (
+                        <>
+                          Serving
+                          <br />
+                          Others
+                        </>
+                      ) : (
+                        card.title
+                      )}
                     </h3>
                     <div
                       className="h-1 w-12 rounded-full mb-5"
@@ -402,55 +408,6 @@ export default function Home() {
               </div>
             </>
           )}
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section
-        ref={ctaSectionRef}
-        id="cta-section"
-        className={`relative py-16 md:py-24 overflow-hidden transition-all duration-1000 ${
-          isVisible['cta-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
-        style={{
-          background: `linear-gradient(135deg, ${foundationGreen} 0%, #1B5E20 50%, ${foundationGreen} 100%)`,
-          backgroundSize: '200% 200%',
-        }}
-      >
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-96 h-96 rounded-full" style={{ background: `radial-gradient(circle, ${foundationOrange} 0%, transparent 60%)`, transform: 'translate(-40%, -40%)' }} />
-          <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full" style={{ background: `radial-gradient(circle, ${foundationBrown} 0%, transparent 60%)`, transform: 'translate(40%, 40%)' }} />
-        </div>
-        <div
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '32px 32px',
-          }}
-        />
-
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-10 md:gap-12">
-            <div className="flex-1 text-center md:text-left">
-              <h2 className="font-heading text-white text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                Ready to make a difference?
-              </h2>
-              <p className="mt-4 text-white/95 text-base md:text-lg max-w-xl mx-auto md:mx-0">
-                Join us as a volunteer, partner with BBF, or reach out to learn more.
-              </p>
-            </div>
-            <div className="flex-shrink-0 flex justify-center md:justify-end">
-              <a
-                href="mailto:info@buildingbridgefoundation.org"
-                className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg text-white border-2 border-white/90 hover:border-white bg-white/15 backdrop-blur-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:bg-white/25"
-              >
-                Get in Touch
-                <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 
