@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 const foundationGreen = '#2E7D32'
 const foundationBrown = '#6D4C41'
@@ -23,14 +22,12 @@ export default function Navbar() {
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="relative">
                 <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md" style={{ background: foundationGreen }} />
-                <Image
-                  src="/newlogoicon.png"
-                  alt="Building Bridge logo"
-                  width={64}
-                  height={40}
-                  priority
-                  className="w-16 h-7 relative transition-transform duration-300 group-hover:scale-110"
-                />
+                <div
+                  aria-hidden="true"
+                  className="w-16 h-7 relative transition-transform duration-300 group-hover:scale-110 rounded border border-gray-300 bg-white text-[10px] font-semibold tracking-wide text-gray-700 flex items-center justify-center"
+                >
+                  Logo Here
+                </div>
               </div>
               <span className="hidden lg:block font-heading text-lg md:text-xl font-bold text-gray-900 group-hover:opacity-90 transition-opacity">
                 BUILDING BRIDGE FOUNDATION

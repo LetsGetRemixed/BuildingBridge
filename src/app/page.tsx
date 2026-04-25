@@ -150,14 +150,12 @@ export default function Home() {
                 }}
               >
                 <div className="bg-white rounded-[22px] p-5 md:p-8 shadow-inner">
-                  <Image
-                    src="/logo1.png"
-                    alt="Building Bridge Foundation"
-                    width={800}
-                    height={800}
-                    priority
-                    className="max-w-[260px] md:max-w-[320px] w-full h-auto relative z-10 transition-transform duration-500 group-hover:scale-[1.02]"
-                  />
+                  <div
+                    aria-hidden="true"
+                    className="max-w-[260px] md:max-w-[320px] w-full aspect-[4/3] relative z-10 transition-transform duration-500 group-hover:scale-[1.02] rounded-2xl border border-gray-300 bg-white text-gray-700 flex items-center justify-center font-semibold tracking-wide"
+                  >
+                    Logo Here
+                  </div>
                 </div>
               </div>
             </div>
@@ -167,7 +165,7 @@ export default function Home() {
             className="font-heading text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] opacity-0 animate-fade-in-up"
             style={{ animationDelay: '0.35s', animationFillMode: 'forwards' }}
           >
-            Helping People Cross Gaps They Couldn&apos;t Cross Alone
+            Tagline Here
           </h1>
         </div>
       </section>

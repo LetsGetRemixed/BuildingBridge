@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 interface User {
   id: string
@@ -47,21 +46,18 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
               <div className="relative">
-                <Image
-                  src="/newlogoicon.png"
-                  alt="Building Bridge Foundation logo"
-                  width={64}
-                  height={64}
-                  className="transition-transform duration-300 group-hover:scale-110"
-                />
+                <div
+                  aria-hidden="true"
+                  className="w-16 h-16 transition-transform duration-300 group-hover:scale-110 rounded border border-white/30 bg-white/90 text-xs font-semibold tracking-wide text-gray-800 flex items-center justify-center"
+                >
+                  Logo Here
+                </div>
               </div>
               <span className="font-heading text-lg font-bold text-white group-hover:opacity-90 transition-opacity">
                 BUILDING BRIDGE FOUNDATION
               </span>
             </Link>
-            <p className="text-gray-300 text-sm leading-relaxed mb-6">
-              Helping People Cross Gaps They Couldn&apos;t Cross Alone
-            </p>
+            <p className="text-gray-300 text-sm leading-relaxed mb-6">Tagline Here</p>
            
           </div>
 

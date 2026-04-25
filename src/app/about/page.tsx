@@ -327,7 +327,7 @@ export default function About() {
                 icon: '/icons/education.png',
               },
               {
-                title: 'Food Insecurity and Basic Needs',
+                title: 'Second Interest',
                 href: '/about/pillars#support',
                 icon: '/icons/housing.png',
               },
